@@ -32,15 +32,19 @@ int BindSocket(int Socket, unsigned long Address, int Port)
 {
 	struct sockaddr_in Data;
 	Data.sin_family = AF_INET;
-	Data.sin_addr.s_addr = Address;
+	Data.sin_addr.s_addr = htonl(Address);
 	Data.sin_port = htons(Port);
 
 	return bind(Socket, (struct sockaddr*)&Data, sizeof(Data));
 }
 
-int SendPacket(int Socket, struct Packet* Target)
+int SendPacket(int Socket, unsigned long DestinationAddress, int DestinationPort, struct Packet* Target)
 {
-	int Sent = send(Socket, (char*)Target->Raw, (int)Target->Length, 0);
+	struct sockaddr_in Destination;
+	Destination.sin_addr.s_addr = htonl(DestinationAddress);
+	Destination.sin_port = htons(DestinationPort);
+
+	int Sent = sendto(Socket, (char*)Target->Raw, (int)Target->Length, 0, (struct sockaddr*)&Destination, sizeof(Destination));
 
 	if (Sent != (int)Target->Length)
 	{

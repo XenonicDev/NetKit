@@ -106,7 +106,7 @@ void TCPSYNPacketInj()
 		return;
 	}
 
-	BindSocket(Socket, SourceAddress.sin_addr.s_addr, SourcePort);
+	BindSocket(Socket, ntohl(SourceAddress.sin_addr.s_addr), SourcePort);
 
 	printf("Enter Destination Address: ");
 	Input = getline();
@@ -156,20 +156,21 @@ void TCPSYNPacketInj()
 		return;
 	}
 
-	struct IP_HEADER* IPHeader = CreateIPHeader(IPPROTO_TCP, SourceAddress.sin_addr.s_addr, DestinationAddress.sin_addr.s_addr, 0);
+	struct IP_HEADER* IPHeader = CreateIPHeader(IPPROTO_TCP, ntohl(SourceAddress.sin_addr.s_addr), ntohl(DestinationAddress.sin_addr.s_addr), 0);
 	struct TCP_HEADER* TCPHeader = CreateTCPHeader(SourcePort, DestinationPort, 0, 0);
 
 	struct Packet* FinalPacket = CreateTCPPacket(IPHeader, TCPHeader, NULL, 0);
 
-	printf("\nTransmitting %d Packets...", PacketCount);
+	printf("\nTransmitting %d Packets...\n", PacketCount);
 
 	int SentPacketCount = 0;
 
 	for (int Iter = 0; Iter < PacketCount; ++Iter)
 	{
-		if (SendPacket(Socket, FinalPacket) != 0)
+		if (SendPacket(Socket, ntohl(DestinationAddress.sin_addr.s_addr), DestinationPort, FinalPacket) != 0)
 		{
 			printf("Error Transmitting Packet #%d\n", Iter + 1);
+			printf("Error Code: %d\n", WSAGetLastError());
 		}
 
 		else

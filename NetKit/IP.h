@@ -20,8 +20,8 @@ struct IP_HEADER* CreateIPHeader(int Protocol, unsigned long SourceAddress, unsi
 	Result->ttl = htons(128);
 	Result->protocol = Protocol;
 	Result->check = 0;  // Calculate this Later.
-	Result->saddr = SourceAddress;
-	Result->daddr = DestinationAddress;
+	Result->saddr = htonl(SourceAddress);
+	Result->daddr = htonl(DestinationAddress);
 
 	Result->check = (unsigned short)CalculateChecksum((unsigned char*)Result, Result->ihl * 4);
 
