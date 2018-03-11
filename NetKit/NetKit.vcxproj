@@ -118,8 +118,12 @@
     <ClCompile Include="Main.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="IP.h" />
+    <ClInclude Include="IPHeader.h" />
     <ClInclude Include="Platform.h" />
     <ClInclude Include="SysUtils.h" />
+    <ClInclude Include="TCP.h" />
+    <ClInclude Include="TCPHeader.h" />
     <ClInclude Include="Unix\UnixSetup.h" />
     <ClInclude Include="Windows\WindowsSetup.h" />
   </ItemGroup>

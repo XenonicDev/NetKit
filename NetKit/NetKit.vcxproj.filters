@@ -38,5 +38,17 @@
     <ClInclude Include="Unix\UnixSetup.h">
       <Filter>Source Files\Unix</Filter>
     </ClInclude>
+    <ClInclude Include="TCP.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IP.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="IPHeader.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="TCPHeader.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

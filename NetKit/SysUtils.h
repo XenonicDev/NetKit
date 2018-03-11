@@ -100,3 +100,25 @@ struct ConnectionData GetSocketConnectionInfo(int Socket)
 
 	return Result;
 }
+
+// Credit: Richard Stevens
+unsigned short CalculateChecksum(unsigned char* Data, size_t Length)
+{
+	long sum = 0;
+	unsigned short *temp = (unsigned short *)Data;
+
+	while (Length > 1) {
+		sum += *temp++;
+		if (sum & 0x80000000)
+			sum = (sum & 0xFFFF) + (sum >> 16);
+		Length -= 2;
+	}
+
+	if (Length)
+		sum += (unsigned short) *((unsigned char *)temp);
+
+	while (sum >> 16)
+		sum = (sum & 0xFFFF) + (sum >> 16);
+
+	return ~sum;
+}
