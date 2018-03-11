@@ -122,6 +122,7 @@
     <ClInclude Include="IPHeader.h" />
     <ClInclude Include="Packet.h" />
     <ClInclude Include="Platform.h" />
+    <ClInclude Include="PseudoHeader.h" />
     <ClInclude Include="SocketUtils.h" />
     <ClInclude Include="SysUtils.h" />
     <ClInclude Include="TCP.h" />
