@@ -50,5 +50,8 @@
     <ClInclude Include="TCPHeader.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="SocketUtils.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
