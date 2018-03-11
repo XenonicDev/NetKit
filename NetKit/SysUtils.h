@@ -53,7 +53,7 @@ char* AddressToString(unsigned long int Address)
 	struct sockaddr_in AddressAsSockaddr;
 	AddressAsSockaddr.sin_addr.s_addr = Address;
 
-	inet_ntop(AF_INET, &AddressAsSockaddr, Result, INET_ADDRSTRLEN);
+	inet_ntop(AF_PACKET, &AddressAsSockaddr, Result, INET_ADDRSTRLEN);
 
 	return Result;
 }

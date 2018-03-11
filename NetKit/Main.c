@@ -78,7 +78,7 @@ void TCPSYNPacketInj()
 
 	struct sockaddr_in SourceAddress;
 
-	inet_pton(AF_INET, Input, &SourceAddress.sin_addr);
+	inet_pton(AF_PACKET, Input, &SourceAddress.sin_addr);
 
 	free(Input);
 
@@ -121,7 +121,7 @@ void TCPSYNPacketInj()
 
 	struct sockaddr_in DestinationAddress;
 
-	inet_pton(AF_INET, Input, &DestinationAddress);
+	inet_pton(AF_PACKET, Input, &DestinationAddress);
 
 	if (DestinationAddress.sin_addr.s_addr == 0)
 	{

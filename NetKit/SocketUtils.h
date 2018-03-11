@@ -8,7 +8,7 @@
 
 int CreateSocket(int Protocol)
 {
-	int Result = socket(AF_INET, SOCK_RAW, Protocol);
+	int Result = socket(PF_PACKET, SOCK_RAW, Protocol);
 	if (Result == -1)
 	{
 		printf("CreateSocket Failed\n");
@@ -31,7 +31,7 @@ int CreateSocket(int Protocol)
 int BindSocket(int Socket, unsigned long Address, int Port)
 {
 	struct sockaddr_in Data;
-	Data.sin_family = AF_INET;
+	Data.sin_family = AF_PACKET;
 	Data.sin_addr.s_addr = htonl(Address);
 	Data.sin_port = htons(Port);
 
