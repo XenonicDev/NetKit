@@ -1,4 +1,5 @@
 #include "SysUtils.h"
+#include "SocketUtils.h"
 
 #ifdef PLATFORM_WINDOWS
 #include "Windows/WindowsSetup.h"
@@ -25,7 +26,62 @@ void SystemInfo()
 
 void TCPPacketInj()
 {
-	
+	int Socket = CreateSocket(IPPROTO_TCP);
+	if (Socket == -1)
+	{
+		printf("Socket Creation Error, Closing\n");
+		system("pause");
+
+		return;
+	}
+
+	printf("Enter Binding Address: ");
+	char* Input = getline();
+	if (!Input)
+	{
+		printf("\nInput Error, Closing\n");
+		system("pause");
+
+		return;
+	}
+
+	struct sockaddr_in Address;
+
+	inet_pton(AF_INET, Input, &Address.sin_addr);
+
+	if (Address.sin_addr.s_addr == 0)
+	{
+		printf("\nAddress Failed to Parse, Closing\n");
+		system("pause");
+
+		return;
+	}
+
+	free(Input);
+
+	printf("\nEnter Binding Port: ");
+	Input = getline();
+	if (!Input)
+	{
+		printf("\nInput Error, Closing\n");
+		system("pause");
+
+		return;
+	}
+
+	if (atoi(Input) == 0)
+	{
+		printf("\nPort Failed to Parse, Closing\n");
+		system("pause");
+
+		return;
+	}
+
+	BindSocket(Socket, Address.sin_addr.s_addr, atoi(Input));
+
+	free(Input);
+
+	ShutdownSocket(Socket);
 }
 
 void PrintMenu()

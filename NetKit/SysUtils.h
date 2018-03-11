@@ -48,12 +48,12 @@ struct ConnectionData
 
 char* AddressToString(unsigned long int Address)
 {
-	char* Result = (char*)malloc(16 * sizeof(char));
+	char* Result = (char*)malloc(INET_ADDRSTRLEN * sizeof(char));
 
 	struct sockaddr_in AddressAsSockaddr;
 	AddressAsSockaddr.sin_addr.s_addr = Address;
 
-	inet_ntop(AF_INET, &AddressAsSockaddr, Result, 16);
+	inet_ntop(AF_INET, &AddressAsSockaddr, Result, INET_ADDRSTRLEN);
 
 	return Result;
 }

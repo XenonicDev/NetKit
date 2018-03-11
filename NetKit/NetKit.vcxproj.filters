@@ -53,5 +53,8 @@
     <ClInclude Include="SocketUtils.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Packet.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

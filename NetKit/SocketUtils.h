@@ -39,7 +39,7 @@ int BindSocket(int Socket, unsigned long Address, int Port)
 
 int SendPacket(int Socket, unsigned char* Buffer, size_t BufferLength)
 {
-	int Sent = send(Socket, (char*)Buffer, BufferLength, 0);
+	int Sent = send(Socket, (char*)Buffer, (int)BufferLength, 0);
 
 	if (Sent != BufferLength)
 	{
@@ -49,4 +49,14 @@ int SendPacket(int Socket, unsigned char* Buffer, size_t BufferLength)
 	}
 
 	return 0;
+}
+
+void ShutdownSocket(int Socket)
+{
+	shutdown(Socket, 2);
+#ifdef PLATFORM_WINDOWS
+	closesocket(Socket);
+#else
+	close(Socket);
+#endif
 }

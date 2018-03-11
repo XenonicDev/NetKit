@@ -120,6 +120,7 @@
   <ItemGroup>
     <ClInclude Include="IP.h" />
     <ClInclude Include="IPHeader.h" />
+    <ClInclude Include="Packet.h" />
     <ClInclude Include="Platform.h" />
     <ClInclude Include="SocketUtils.h" />
     <ClInclude Include="SysUtils.h" />
