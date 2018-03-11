@@ -23,7 +23,7 @@ struct IP_HEADER* CreateIPHeader(int Protocol, unsigned long SourceAddress, unsi
 	Result->saddr = SourceAddress;
 	Result->daddr = DestinationAddress;
 
-	Result->check = CalculateChecksum((unsigned char*)Result, Result->ihl * 4);
+	Result->check = (unsigned short)CalculateChecksum((unsigned char*)Result, Result->ihl * 4);
 
 	return Result;
 }
