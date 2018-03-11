@@ -170,7 +170,6 @@ void TCPSYNPacketInj()
 		if (SendPacket(Socket, ntohl(DestinationAddress.sin_addr.s_addr), DestinationPort, FinalPacket) != 0)
 		{
 			printf("Error Transmitting Packet #%d\n", Iter + 1);
-			printf("Error Code: %d\n", WSAGetLastError());
 		}
 
 		else
