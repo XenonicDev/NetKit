@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Platform.h"
+#include "Packet.h"
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -37,11 +38,11 @@ int BindSocket(int Socket, unsigned long Address, int Port)
 	return bind(Socket, (struct sockaddr*)&Data, sizeof(Data));
 }
 
-int SendPacket(int Socket, unsigned char* Buffer, size_t BufferLength)
+int SendPacket(int Socket, struct Packet* Target)
 {
-	int Sent = send(Socket, (char*)Buffer, (int)BufferLength, 0);
+	int Sent = send(Socket, (char*)Target->Raw, (int)Target->Length, 0);
 
-	if (Sent != BufferLength)
+	if (Sent != (int)Target->Length)
 	{
 		printf("SendPacket Warning: Total Bytes Sent Did Not Match Size of Packet Buffer. Total Bytes Sent: %d\n", Sent);
 
