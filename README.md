@@ -3,4 +3,4 @@
 
 ### This utility has been written for solely educational purposes. Use of this tool for malicious activities is strictly forbidden.
 
-This tool can only compile on Windows Server or versions of \*nix that support Berkeley sockets. Packet socket descriptors for consumer versions of Windows have been removed.
+This tool is built for Linux and versions of Windows Server that support raw sockets. Packet socket descriptors for consumer versions of Windows have been removed.
