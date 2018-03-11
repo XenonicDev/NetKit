@@ -1,3 +1,6 @@
+/*
+	Copyright (c) 2017-2018 Andrew Depke
+*/
 #pragma once
 
 #if defined(_WIN32) || defined(_WIN64)
