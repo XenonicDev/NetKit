@@ -44,8 +44,6 @@ int SendPacket(int Socket, struct Packet* Target)
 
 	if (Sent != (int)Target->Length)
 	{
-		printf("SendPacket Warning: Total Bytes Sent Did Not Match Size of Packet Buffer. Total Bytes Sent: %d\n", Sent);
-
 		return 1;
 	}
 

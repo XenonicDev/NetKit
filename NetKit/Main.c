@@ -29,7 +29,7 @@ void SystemInfo()
 
 void TCPSYNPacketInj()
 {
-	int Socket = CreateSocket(IPPROTO_TCP);
+	int Socket = CreateSocket(IPPROTO_RAW);
 	if (Socket == -1)
 	{
 		printf("Socket Creation Error, Closing\n");
@@ -65,7 +65,7 @@ void TCPSYNPacketInj()
 		}
 	}
 
-	printf("Enter Binding Address: ");
+	printf("Enter Binding Address (0.0.0.0 to Automatically Bind on an Interface): ");
 	Input = getline();
 	if (!Input)
 	{
@@ -80,18 +80,9 @@ void TCPSYNPacketInj()
 
 	inet_pton(AF_INET, Input, &SourceAddress.sin_addr);
 
-	if (SourceAddress.sin_addr.s_addr == 0)
-	{
-		printf("\nAddress Failed to Parse, Closing\n");
-		ShutdownSocket(Socket);
-		system("pause");
-
-		return;
-	}
-
 	free(Input);
 
-	printf("\nEnter Binding Port: ");
+	printf("Enter Binding Port: ");
 	Input = getline();
 	if (!Input)
 	{
@@ -141,7 +132,7 @@ void TCPSYNPacketInj()
 		return;
 	}
 
-	printf("\nEnter Destination Port: ");
+	printf("Enter Destination Port: ");
 	Input = getline();
 	if (!Input)
 	{
@@ -170,9 +161,21 @@ void TCPSYNPacketInj()
 
 	struct Packet* FinalPacket = CreateTCPPacket(IPHeader, TCPHeader, NULL, 0);
 
+	printf("\nTransmitting %d Packets...", PacketCount);
+
+	int SentPacketCount = 0;
+
 	for (int Iter = 0; Iter < PacketCount; ++Iter)
 	{
-		SendPacket(Socket, FinalPacket);
+		if (SendPacket(Socket, FinalPacket) != 0)
+		{
+			printf("Error Transmitting Packet #%d\n", Iter + 1);
+		}
+
+		else
+		{
+			++SentPacketCount;
+		}
 	}
 
 	free(FinalPacket);
@@ -180,6 +183,9 @@ void TCPSYNPacketInj()
 	free(IPHeader);
 
 	ShutdownSocket(Socket);
+
+	printf("\nSuccessfully Transmitted %d Packets\n", SentPacketCount);
+	system("pause");
 }
 
 void PrintMenu()
