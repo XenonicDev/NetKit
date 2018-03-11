@@ -3,7 +3,7 @@
 #include "Platform.h"
 #include "TCPHeader.h"
 
-struct TCP_HEADER* CreateTCPHeader(int SourcePort, int DestinationPort, int Sequence, int Acknowledgement, int Flags)
+struct TCP_HEADER* CreateTCPHeader(int SourcePort, int DestinationPort, int Sequence, int Acknowledgement)
 {
 	struct TCP_HEADER* Result;
 

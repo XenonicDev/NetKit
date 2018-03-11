@@ -9,7 +9,7 @@ struct IP_HEADER* CreateIPHeader(int Protocol, unsigned long SourceAddress, unsi
 {
 	struct IP_HEADER* Result;
 
-	Result = (IP_HEADER*)malloc(sizeof(IP_HEADER));
+	Result = (struct IP_HEADER*)malloc(sizeof(struct IP_HEADER));
 
 	Result->version = 4;
 	Result->ihl = (sizeof(struct IP_HEADER)) / 4;  // Divide into Words. No Options.
