@@ -7,7 +7,7 @@
 
 char* getline()
 {
-	char* line = malloc(100), *linep = line;
+	char* line = (char*)malloc(100), *linep = line;
 	size_t lenmax = 100, len = lenmax;
 	int c;
 
@@ -22,7 +22,7 @@ char* getline()
 
 		if (--len == 0) {
 			len = lenmax;
-			char * linen = realloc(linep, lenmax *= 2);
+			char * linen = (char*)realloc(linep, lenmax *= 2);
 
 			if (linen == NULL) {
 				free(linep);
@@ -77,10 +77,12 @@ struct ConnectionData GetSocketConnectionInfo(int Socket)
 	Result.DestinationAddress = 0;
 
 	struct sockaddr_in SourceAddr;
+	int SourceAddrLength = sizeof(SourceAddr);
 
 	struct sockaddr_in DestAddr;
+	int DestAddrLength = sizeof(DestAddr);
 
-	if (getsockname(Socket, (struct sockaddr*)&SourceAddr, sizeof(SourceAddr)) != 0)
+	if (getsockname(Socket, (struct sockaddr*)&SourceAddr, &SourceAddrLength) != 0)
 	{
 		printf("GetSocketConnectionInfo Failed\n");
 
@@ -89,7 +91,7 @@ struct ConnectionData GetSocketConnectionInfo(int Socket)
 
 	Result.SourceAddress = SourceAddr.sin_addr.s_addr;
 
-	if (getpeername(Socket, (struct sockaddr*)&DestAddr, (size_t)sizeof(DestAddr)) != 0)
+	if (getpeername(Socket, (struct sockaddr*)&DestAddr, &DestAddrLength) != 0)
 	{
 		printf("GetSocketConnectionInfo Failed\n");
 
@@ -102,7 +104,7 @@ struct ConnectionData GetSocketConnectionInfo(int Socket)
 }
 
 // Credit: Richard Stevens
-unsigned short CalculateChecksum(unsigned char* Data, size_t Length)
+unsigned long CalculateChecksum(unsigned char* Data, size_t Length)
 {
 	long sum = 0;
 	unsigned short *temp = (unsigned short *)Data;
