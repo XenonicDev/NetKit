@@ -15,7 +15,7 @@ int CreateSocket(int Protocol)
 		return -1;
 	}
 
-	bool Option = true;
+	int Option = 1;
 
 	if (setsockopt(Result, IPPROTO_IP, IP_HDRINCL, (char*)&Option, sizeof(Option)) != 0)
 	{
