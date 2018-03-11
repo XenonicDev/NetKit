@@ -6,6 +6,8 @@
 #if defined(_WIN32) || defined(_WIN64)
 #define PLATFORM_WINDOWS
 
+#error Windows Is No Longer Supported
+
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 
