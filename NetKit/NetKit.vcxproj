@@ -118,6 +118,8 @@
     <ClCompile Include="Main.c" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Ethernet.h" />
+    <ClInclude Include="EthernetHeader.h" />
     <ClInclude Include="IP.h" />
     <ClInclude Include="IPHeader.h" />
     <ClInclude Include="Packet.h" />
