@@ -100,5 +100,7 @@ int main(int ArgC, char** ArgV)
 
 	free(Input);
 
+	Shutdown();
+
 	return 0;
 }
