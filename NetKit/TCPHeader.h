@@ -8,7 +8,7 @@
 #ifdef PLATFORM_UNIX
 typedef struct tcphdr TCP_HEADER;
 #else
-struct TCP_HEADER
+typedef struct
 {
 	unsigned short source;  // Source Port
 	unsigned short dest;  // Destination Port
@@ -27,5 +27,5 @@ struct TCP_HEADER
 	unsigned short window;  // Window Size
 	unsigned short check;  // Checksum
 	unsigned short urg_ptr;  // Urgent Pointer
-};
+} TCP_HEADER;
 #endif

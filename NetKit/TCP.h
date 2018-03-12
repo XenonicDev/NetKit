@@ -6,11 +6,11 @@
 #include "Platform.h"
 #include "TCPHeader.h"
 
-struct TCP_HEADER* CreateTCPHeader(int SourcePort, int DestinationPort, int Sequence, int Acknowledgement)
+TCP_HEADER* CreateTCPHeader(int SourcePort, int DestinationPort, int Sequence, int Acknowledgement)
 {
-	struct TCP_HEADER* Result;
+	TCP_HEADER* Result;
 
-	Result = (struct TCP_HEADER*)malloc(sizeof(struct TCP_HEADER));
+	Result = (TCP_HEADER*)malloc(sizeof(TCP_HEADER));
 
 	Result->source = htons(SourcePort);
 	Result->dest = htons(DestinationPort);

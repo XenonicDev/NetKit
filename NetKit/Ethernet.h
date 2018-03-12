@@ -7,9 +7,9 @@
 
 struct ETHERNET_HEADER* CreateEthernetHeader(char* SourceMACAddress, char* DestinationMACAddress, int Protocol)
 {
-	struct ETHERNET_HEADER* Result;
+	ETHERNET_HEADER* Result;
 
-	Result = (struct ETHERNET_HEADER*)malloc(sizeof(struct ETHERNET_HEADER));
+	Result = (ETHERNET_HEADER*)malloc(sizeof(ETHERNET_HEADER));
 
 	memcpy(Result->h_source, (void*)ether_aton(SourceMACAddress), 6);
 	memcpy(Result->h_dest, (void*)ether_aton(DestinationMACAddress), 6);

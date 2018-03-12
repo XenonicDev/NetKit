@@ -8,7 +8,7 @@
 #ifdef PLATFORM_UNIX
 typedef struct iphdr IP_HEADER;
 #else
-struct IP_HEADER
+typedef struct
 {
 	unsigned char ihl : 4;  // Header Length
 	unsigned char version : 4;  // Header Version
@@ -23,5 +23,5 @@ struct IP_HEADER
 	unsigned int daddr;  // Destination Address
 
 	// Options...
-};
+} IP_HEADER;
 #endif

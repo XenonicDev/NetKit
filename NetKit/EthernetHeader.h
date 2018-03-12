@@ -10,10 +10,10 @@ typedef struct ethhdr ETHERNET_HEADER;
 #else
 #define ETH_ALEN 6  // Octets in a Single Ethernet Address
 
-struct ETHERNET_HEADER
+typedef struct
 {
 	unsigned char h_dest[ETH_ALEN];  // Destination Ethernet Address
 	unsigned char h_source[ETH_ALEN];  // Source Ethernet Address
 	unsigned short h_proto;  // Protocol
-};
+} ETHERNET_HEADER;
 #endif

@@ -4,11 +4,11 @@
 #pragma once
 
 // TCP Pseudo Header
-struct PSEUDO_HEADER
+typedef struct
 {
 	unsigned int SourceAddress;
 	unsigned int DestinationAddress;
 	unsigned char Reserved;
 	unsigned char Protocol;
 	unsigned short Length;
-};
+} PSEUDO_HEADER;

@@ -8,16 +8,16 @@
 #include "IPHeader.h"
 #include "TCPHeader.h"
 
-struct IP_HEADER* CreateIPHeader(int Protocol, unsigned long SourceAddress, unsigned long DestinationAddress, size_t PayloadLength)
+IP_HEADER* CreateIPHeader(int Protocol, unsigned long SourceAddress, unsigned long DestinationAddress, size_t PayloadLength)
 {
-	struct IP_HEADER* Result;
+	IP_HEADER* Result;
 
-	Result = (struct IP_HEADER*)malloc(sizeof(struct IP_HEADER));
+	Result = (IP_HEADER*)malloc(sizeof(IP_HEADER));
 
 	Result->version = 4;
-	Result->ihl = (sizeof(struct IP_HEADER)) / 4;  // Divide into Words. No Options.
+	Result->ihl = (sizeof(IP_HEADER)) / 4;  // Divide into Words. No Options.
 	Result->tos = 0;
-	Result->tot_len = htons(sizeof(struct IP_HEADER) + sizeof(struct TCP_HEADER) + PayloadLength);
+	Result->tot_len = htons(sizeof(IP_HEADER) + sizeof(TCP_HEADER) + PayloadLength);
 	Result->id = 0;
 	Result->frag_off = 0;
 	Result->ttl = htons(128);
