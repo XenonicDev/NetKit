@@ -9,7 +9,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-int CreateSocket(int Protocol)
+int CreateSocket(int Protocol, int CustomHeaders)
 {
 	int Result = socket(PF_PACKET, SOCK_RAW, Protocol);
 	if (Result == -1)
@@ -19,13 +19,16 @@ int CreateSocket(int Protocol)
 		return -1;
 	}
 
-	int Option = 1;
-
-	if (setsockopt(Result, IPPROTO_IP, IP_HDRINCL, (char*)&Option, sizeof(Option)) != 0)
+	if (CustomHeaders)
 	{
-		printf("CreateSocket Failed at Setting Custom Headers\n");
+		int Option = 1;
 
-		return Result;
+		if (setsockopt(Result, IPPROTO_IP, IP_HDRINCL, (char*)&Option, sizeof(Option)) != 0)
+		{
+			printf("CreateSocket Failed at Setting Custom Headers\n");
+
+			return Result;
+		}
 	}
 
 	return Result;

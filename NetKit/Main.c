@@ -15,7 +15,7 @@
 
 void PrintHeader()
 {
-	printf("- NetKit v0.1 -\n");
+	printf("- NetKit v0.2 -\n");
 	printf("Copyright (c) 2018 Andrew Depke\n");
 }
 
@@ -32,7 +32,7 @@ void SystemInfo()
 
 void TCPSYNPacketInj()
 {
-	int Socket = CreateSocket(IPPROTO_RAW);
+	int Socket = CreateSocket(IPPROTO_RAW, 1);
 	if (Socket == -1)
 	{
 		printf("Socket Creation Error, Closing\n");
