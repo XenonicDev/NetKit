@@ -27,4 +27,6 @@
 #include <linux/tcp.h>
 #include <arpa/inet.h>
 #include <string.h>  // bzero(), strncpy_s()
+
+using namespace std::size_t;
 #endif
