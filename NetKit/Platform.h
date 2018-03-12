@@ -15,10 +15,11 @@
 #else
 #define PLATFORM_UNIX
 
-#include<sys/socket.h>
-#include<sys/ioctl.h>
-#include<net/if.h>
-#include<linux/ip.h>
-#include<linux/tcp.h>
-#include<arpa/inet.h>
+#include <sys/socket.h>
+#include <sys/ioctl.h>
+#include <net/if.h>
+#include <linux/ip.h>
+#include <linux/tcp.h>
+#include <arpa/inet.h>
+#include <strings.h>  // bzero()
 #endif

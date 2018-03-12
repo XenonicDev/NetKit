@@ -41,7 +41,45 @@ int BindSocket(int Socket, unsigned long Address, int Port)
 	Data.sin_addr.s_addr = htonl(Address);
 	Data.sin_port = htons(Port);
 
-	return bind(Socket, (struct sockaddr*)&Data, sizeof(Data));
+	if (bind(Socket, (struct sockaddr*)&Data, sizeof(Data)) != 0)
+	{
+		printf("BindSocket Failed\n");
+
+		return -1;
+	}
+
+	return 0;
+}
+
+int BindSocketRaw(int Socket, char* Device, int Protocol)
+{
+	struct sockaddr_ll LinkLayerAddress;
+	struct ifreq ifr;
+
+	bzero(&LinkLayerAddress, sizeof(LinkLayerAddress));
+	bzero(&ifr, sizeof(ifr));
+
+	strncpy_s((char*)ifr.ifr_name, 16, Device, 16);
+
+	if (ioctl(Socket, SIOCGIFINDEX, &ifr) != 0)
+	{
+		printf("BindSocketRaw Failed at Index Retrieval\n");
+
+		return -1;
+	}
+
+	LinkLayerAddress.sll_family = AF_PACKET;
+	LinkLayerAddress.sll_ifindex = ifr.ifr_ifindex;
+	LinkLayerAddress.sll_protocol = htons(Protocol);
+
+	if (bind(Socket, (struct sockaddr_ll*)&LinkLayerAddress, sizeof(LinkLayerAddress)) != 0)
+	{
+		printf("BindSocketRaw Failed\n");
+
+		return -1;
+	}
+
+	return 0;
 }
 
 int SendPacket(int Socket, unsigned long DestinationAddress, int DestinationPort, struct Packet* Target)
@@ -54,7 +92,7 @@ int SendPacket(int Socket, unsigned long DestinationAddress, int DestinationPort
 
 	if (Sent != (int)Target->Length)
 	{
-		return 1;
+		return -1;
 	}
 
 	return 0;
