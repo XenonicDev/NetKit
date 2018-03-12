@@ -4,6 +4,7 @@
 #pragma once
 
 #include "Platform.h"
+#include "EthernetHeader.h"
 #include "IPHeader.h"
 #include "TCPHeader.h"
 #include "PseudoHeader.h"
@@ -15,7 +16,7 @@ struct Packet
 	size_t Length;
 };
 
-struct Packet* CreateTCPPacket(struct IP_HEADER* IPHeader, struct TCP_HEADER* TCPHeader, unsigned char* Payload, size_t PayloadLength)
+struct Packet* CreateTCPPacket(struct ETHERNET_HEADER* EthernetHeader, struct IP_HEADER* IPHeader, struct TCP_HEADER* TCPHeader, unsigned char* Payload, size_t PayloadLength)
 {
 	struct Packet* Result;
 
@@ -41,9 +42,14 @@ struct Packet* CreateTCPPacket(struct IP_HEADER* IPHeader, struct TCP_HEADER* TC
 
 	Result = (struct Packet*)malloc(sizeof(struct Packet));
 
-	Result->Raw = (unsigned char*)malloc(ntohs(IPHeader->tot_len));
+	Result->Length = sizeof(struct ETHERNET_HEADER) + ntohs(IPHeader->tot_len);
+	Result->Raw = (unsigned char*)malloc(Result->Length);
 
 	size_t Offset = 0;
+
+	memcpy((Result->Raw + Offset), EthernetHeader, sizeof(struct ETHERNET_HEADER));
+
+	Offset += sizeof(struct ETHERNET_HEADER);
 
 	memcpy((Result->Raw + Offset), IPHeader, IPHeader->ihl * 4);
 
