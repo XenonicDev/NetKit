@@ -82,15 +82,27 @@ int BindSocketRaw(int Socket, char* Device, int Protocol)
 	return 0;
 }
 
-int SendPacket(int Socket, unsigned long DestinationAddress, int DestinationPort, struct Packet* Target)
+int SendPacket(int Socket, unsigned long DestinationAddress, int DestinationPort, unsigned char* Payload, size_t PayloadLength)
 {
 	struct sockaddr_in Destination;
 	Destination.sin_addr.s_addr = htonl(DestinationAddress);
 	Destination.sin_port = htons(DestinationPort);
 
-	int Sent = sendto(Socket, (char*)Target->Raw, (int)Target->Length, 0, (struct sockaddr*)&Destination, sizeof(Destination));
+	int Sent = sendto(Socket, (char*)Payload, (int)PayloadLength, 0, (struct sockaddr*)&Destination, sizeof(Destination));
 
-	if (Sent != (int)Target->Length)
+	if (Sent != (int)PayloadLength)
+	{
+		return -1;
+	}
+
+	return 0;
+}
+
+int SendPacketRaw(int Socket, struct Packet* TargetPacket)
+{
+	int Sent = write(Socket, TargetPacket->Raw, (int)TargetPacket->Length);
+
+	if (Sent != (int)TargetPacket->Length)
 	{
 		return -1;
 	}
