@@ -34,7 +34,7 @@ void PrintHeader()
 
 void SystemInfo()
 {
-	system("cls");
+	ClearScreen();
 
 	char* HostName = GetHostName();
 
@@ -50,7 +50,7 @@ void MenuCreateSocket()
 	char* Input = NULL;
 	while (!Input)
 	{
-		system("cls");
+		ClearScreen();
 
 		printf("Socket Protocol Selector -\n");
 		printf("1. Raw (ETH_P_ALL)\n");
@@ -112,7 +112,7 @@ void MenuBindSocket()
 {
 	char* Input = NULL;
 
-	system("cls");
+	ClearScreen();
 
 	printf("Socket Binding Configuration -\n");
 
@@ -211,7 +211,7 @@ int main(int ArgC, char** ArgV)
 
 		if (!Input)
 		{
-			system("cls");
+			ClearScreen();
 
 			PrintMenu();
 
@@ -243,7 +243,7 @@ int main(int ArgC, char** ArgV)
 
 			else
 			{
-				system("cls");
+				ClearScreen();
 
 				PrintMenu();
 

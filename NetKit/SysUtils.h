@@ -43,6 +43,15 @@ char* GetInput()
 	return linep;
 }
 
+void ClearScreen()
+{
+#ifdef PLATFORM_WINDOWS
+	system("cls");
+#else
+	system("clear");
+#endif
+}
+
 struct ConnectionData
 {
 	unsigned long int SourceAddress;
