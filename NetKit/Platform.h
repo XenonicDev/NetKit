@@ -18,8 +18,11 @@
 #include <sys/socket.h>
 #include <sys/ioctl.h>
 #include <net/if.h>
+#include <net/ether.h>
+#include <linux/if_packet.h>
+#include <linux/if_ether.h>
 #include <linux/ip.h>
 #include <linux/tcp.h>
 #include <arpa/inet.h>
-#include <strings.h>  // bzero()
+#include <string.h>  // bzero(), strncpy_s()
 #endif
