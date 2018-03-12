@@ -16,7 +16,6 @@
 #define PLATFORM_UNIX
 
 #include <unistd.h>
-#include <stddef.h>  // size_t
 #include <sys/socket.h>
 #include <sys/ioctl.h>
 #include <net/if.h>
@@ -27,6 +26,4 @@
 #include <linux/tcp.h>
 #include <arpa/inet.h>
 #include <string.h>  // bzero(), strncpy_s()
-
-using std::size_t;
 #endif

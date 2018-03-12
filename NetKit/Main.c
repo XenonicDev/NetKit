@@ -205,8 +205,6 @@ int main(int ArgC, char** ArgV)
 	char* Input;
 	size_t InputLength = 32;
 
-	SSIZE_T Read = 0;
-
 	while (1)
 	{
 		Input = GetInput();
