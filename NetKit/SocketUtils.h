@@ -85,7 +85,7 @@ int BindSocketRaw(int Socket, char* Device, int Protocol)
 	LinkLayerAddress.sll_ifindex = ifr.ifr_ifindex;
 	LinkLayerAddress.sll_protocol = htons(Protocol);
 
-	if (bind(Socket, (struct sockaddr_ll*)&LinkLayerAddress, sizeof(LinkLayerAddress)) != 0)
+	if (bind(Socket, (struct sockaddr*)&LinkLayerAddress, sizeof(LinkLayerAddress)) != 0)
 	{
 		printf("BindSocketRaw Failed\n");
 
