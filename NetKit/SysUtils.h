@@ -52,6 +52,15 @@ void ClearScreen()
 #endif
 }
 
+void Pause()
+{
+#ifdef PLATFORM_WINDOWS
+	system("pause");
+#else
+	getchar();
+#endif
+}
+
 struct ConnectionData
 {
 	unsigned long int SourceAddress;

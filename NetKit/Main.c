@@ -21,7 +21,7 @@ void FatalError()
 {
 	printf("\n\n-- Fatal Error Occurred, Closing --\n\n");
 
-	system("pause");
+	Pause();
 
 	exit(1);
 }
@@ -42,7 +42,7 @@ void SystemInfo()
 
 	free(HostName);
 
-	system("pause");
+	Pause();
 }
 
 void MenuCreateSocket()
@@ -167,7 +167,7 @@ void MenuSendPacket()
 
 	ShutdownSocket(Socket);
 
-	system("pause");
+	Pause();
 }
 
 void MenuLaunchPacketPump()
@@ -177,7 +177,7 @@ void MenuLaunchPacketPump()
 
 	ShutdownSocket(Socket);
 
-	system("pause");
+	Pause();
 }
 
 void PrintMenu()
@@ -197,7 +197,7 @@ int main(int ArgC, char** ArgV)
 	{
 		printf("\n Setup Failed. Closing.\n");
 
-		system("pause");
+		Pause();
 
 		return -1;
 	}
