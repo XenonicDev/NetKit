@@ -3,9 +3,9 @@
 */
 #pragma once
 
-bool Setup()
+int Setup()
 {
-	return true;
+	return 0;
 }
 
 void Shutdown()
