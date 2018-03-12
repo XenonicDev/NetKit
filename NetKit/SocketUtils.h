@@ -24,7 +24,7 @@ int CreateSocket(int Protocol)
 
 int CreateSocketRaw(int Protocol, int CustomHeaders)
 {
-	int Result = socket(PF_PACKET, SOCK_RAW, Protocol);
+	int Result = socket(PF_PACKET, SOCK_RAW, htons(Protocol));
 	if (Result == -1)
 	{
 		printf("CreateSocketRaw Failed\n");
