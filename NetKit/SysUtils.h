@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-char* getline()
+char* GetInput()
 {
 	char* line = (char*)malloc(100), *linep = line;
 	size_t lenmax = 100, len = lenmax;
