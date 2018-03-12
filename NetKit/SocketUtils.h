@@ -111,7 +111,7 @@ int SendPacket(int Socket, unsigned long DestinationAddress, int DestinationPort
 	return 0;
 }
 
-int SendPacketRaw(int Socket, struct Packet* TargetPacket)
+int SendPacketRaw(int Socket, Packet* TargetPacket)
 {
 	int Sent = write(Socket, TargetPacket->Raw, (int)TargetPacket->Length);
 

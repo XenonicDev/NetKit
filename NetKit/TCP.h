@@ -17,7 +17,7 @@ TCP_HEADER* CreateTCPHeader(int SourcePort, int DestinationPort, int Sequence, i
 	Result->seq = htonl(Sequence);
 	Result->ack_seq = htonl(Acknowledgement);
 	Result->res1 = 0;
-	Result->doff = (sizeof(struct TCP_HEADER)) / 4;  // Divide into Words.
+	Result->doff = (sizeof(TCP_HEADER)) / 4;  // Divide into Words.
 	Result->syn = 1;
 	Result->window = htons(8192);
 	Result->check = 0;  // Calculate this Later.
