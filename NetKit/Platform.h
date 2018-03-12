@@ -28,5 +28,5 @@
 #include <arpa/inet.h>
 #include <string.h>  // bzero(), strncpy_s()
 
-using namespace std::size_t;
+using std::size_t;
 #endif
