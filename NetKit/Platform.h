@@ -16,6 +16,7 @@
 #define PLATFORM_UNIX
 
 #include <unistd.h>
+#include <sys/types.h>
 #include <sys/socket.h>
 #include <sys/ioctl.h>
 #include <net/if.h>
