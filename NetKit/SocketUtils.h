@@ -50,7 +50,7 @@ int CreateSocketRaw(int Protocol, int CustomHeaders)
 int BindSocket(int Socket, unsigned long Address, int Port)
 {
 	struct sockaddr_in Data;
-	Data.sin_family = AF_PACKET;
+	Data.sin_family = AF_INET;
 	Data.sin_addr.s_addr = htonl(Address);
 	Data.sin_port = htons(Port);
 
