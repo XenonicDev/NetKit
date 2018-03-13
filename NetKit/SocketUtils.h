@@ -14,7 +14,7 @@ int CreateSocket(int Protocol)
 	int Result = socket(AF_INET, (Protocol == IPPROTO_UDP ? SOCK_DGRAM : SOCK_STREAM), Protocol);
 	if (Result == -1)
 	{
-		printf("CreateSocket Failed\n");
+		printf("CreateSocket Failed. Error: %s\n", strerror(errno));
 
 		return -1;
 	}
@@ -27,7 +27,7 @@ int CreateSocketRaw(int Protocol, int CustomHeaders)
 	int Result = socket(AF_PACKET, SOCK_RAW, htons(Protocol));
 	if (Result == -1)
 	{
-		printf("CreateSocketRaw Failed\n");
+		printf("CreateSocketRaw Failed. Error: %s\n", strerror(errno));
 
 		return -1;
 	}
@@ -38,7 +38,7 @@ int CreateSocketRaw(int Protocol, int CustomHeaders)
 
 		if (setsockopt(Result, IPPROTO_IP, IP_HDRINCL, (char*)&Option, sizeof(Option)) != 0)
 		{
-			printf("CreateSocketRaw Failed at Setting Custom Headers\n");
+			printf("CreateSocketRaw Failed at Setting Custom Headers. Error: %s\n", strerror(errno));
 
 			return Result;
 		}
@@ -56,7 +56,7 @@ int BindSocket(int Socket, unsigned long Address, int Port)
 
 	if (bind(Socket, (struct sockaddr*)&Data, sizeof(Data)) != 0)
 	{
-		printf("BindSocket Failed\n");
+		printf("BindSocket Failed. Error: %s\n", strerror(errno));
 
 		return -1;
 	}
@@ -87,7 +87,7 @@ int BindSocketRaw(int Socket, char* Device, int Protocol)
 
 	if (bind(Socket, (struct sockaddr*)&LinkLayerAddress, sizeof(LinkLayerAddress)) != 0)
 	{
-		printf("BindSocketRaw Failed\n");
+		printf("BindSocketRaw Failed. Error: %s\n", strerror(errno));
 
 		return -1;
 	}

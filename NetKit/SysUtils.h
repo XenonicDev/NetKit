@@ -85,7 +85,7 @@ char* GetHostName()
 
 	if (gethostname(Result, 128) != 0)
 	{
-		printf("GetHostName Failed\n");
+		printf("GetHostName Failed. Error: %s\n", strerror(errno));
 	}
 
 	return Result;
@@ -105,7 +105,7 @@ struct ConnectionData GetSocketConnectionInfo(int Socket)
 
 	if (getsockname(Socket, (struct sockaddr*)&SourceAddr, &SourceAddrLength) != 0)
 	{
-		printf("GetSocketConnectionInfo Failed\n");
+		printf("GetSocketConnectionInfo Failed. Error: %s\n", strerror(errno));
 
 		return Result;
 	}
@@ -114,7 +114,7 @@ struct ConnectionData GetSocketConnectionInfo(int Socket)
 
 	if (getpeername(Socket, (struct sockaddr*)&DestAddr, &DestAddrLength) != 0)
 	{
-		printf("GetSocketConnectionInfo Failed\n");
+		printf("GetSocketConnectionInfo Failed. Error: %s\n", strerror(errno));
 
 		return Result;
 	}
