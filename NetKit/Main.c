@@ -118,7 +118,7 @@ void MenuBindSocket()
 
 	if (IsRawSocket == 1)
 	{
-		printf("Enter Device Name: ");
+		printf("Enter Network Interface Name: ");
 
 		Input = GetInput();
 
