@@ -72,7 +72,7 @@ int BindSocketRaw(int Socket, char* Device, int Protocol)
 	bzero(&LinkLayerAddress, sizeof(LinkLayerAddress));
 	bzero(&ifr, sizeof(ifr));
 
-	strncpy((char*)ifr.ifr_name, Device, 16);
+	strncpy(ifr.ifr_name, Device, IFNAMSIZ - 1);
 
 	if (ioctl(Socket, SIOCGIFINDEX, &ifr) != 0)
 	{
