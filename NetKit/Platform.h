@@ -3,6 +3,8 @@
 */
 #pragma once
 
+#include <errno.h>
+
 #if defined(_WIN32) || defined(_WIN64)
 #define PLATFORM_WINDOWS
 
