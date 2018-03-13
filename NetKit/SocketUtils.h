@@ -74,6 +74,8 @@ int BindSocketRaw(int Socket, char* Device, int Protocol)
 
 	strncpy(ifr.ifr_name, Device, IFNAMSIZ - 1);
 
+	printf("Attempting Interface: %s\n", ifr.ifr_name);
+
 	if (ioctl(Socket, SIOCGIFINDEX, &ifr) != 0)
 	{
 		printf("BindSocketRaw Failed at Network Interface Index Retrieval. Error: %s\n", strerror(errno));
