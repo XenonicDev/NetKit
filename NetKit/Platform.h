@@ -8,12 +8,14 @@
 #if defined(_WIN32) || defined(_WIN64)
 #define PLATFORM_WINDOWS
 
-#error Windows Is No Longer Supported
+#error Windows Is Not Yet Supported
 
 #include <WinSock2.h>
 #include <WS2tcpip.h>
+#include <iphlpapi.h>
 
 #pragma comment(lib, "Ws2_32.lib")
+#pragma comment(lib, "IPHLPAPI.lib")
 #else
 #define PLATFORM_UNIX
 
@@ -27,5 +29,5 @@
 #include <linux/ip.h>
 #include <linux/tcp.h>
 #include <arpa/inet.h>
-#include <string.h>  // bzero(), strncpy_s()
+#include <string.h>  // bzero(), strncpy_s(), strtok_r()
 #endif

@@ -4,13 +4,16 @@
 #include "SysUtils.h"
 #include "SocketUtils.h"
 
+#include "Ethernet.h"
 #include "IP.h"
 #include "TCP.h"
 
 #ifdef PLATFORM_WINDOWS
 #include "Windows/WindowsSetup.h"
+#include "Windows/WindowsUtils.h"
 #else
 #include "Unix/UnixSetup.h"
+#include "Unix/UnixUtils.h"
 #endif
 
 int Socket;
@@ -160,10 +163,142 @@ void MenuBindSocket()
 	free(Input);
 }
 
+ETHERNET_HEADER* MenuEthernetHeader()
+{
+	char* InputSource = NULL;
+	char* InputDestination = NULL;
+
+	ClearScreen();
+
+	printf("Ethernet Header Creator -\n");
+	printf("Enter Source MAC Address (0 for Automatic Assignment): ");
+
+	InputSource = GetInput();
+
+	char* DefaultGateway = GetDefaultGateway();
+	if (DefaultGateway)
+	{
+		printf("Predicted Default Gateway: %s\n", DefaultGateway);
+
+		free(DefaultGateway);
+
+		printf("Enter Destination MAC Address (0 to Use Predicted Default Gateway): ");
+	}
+
+	else
+	{
+		printf("Could Not Determine Default Gateway.\n");
+		printf("Enter Destination MAC Address: ");
+	}
+
+	InputDestination = GetInput();
+
+	ETHERNET_HEADER* Result = CreateEthernetHeader(InputSource, InputDestination, ETHERTYPE_IP);
+
+	free(InputSource);
+	free(InputDestination);
+
+	return Result;
+}
+
+IP_HEADER* MenuIPHeader()
+{
+	char* InputSource = NULL;
+	char* InputDestination = NULL;
+
+	ClearScreen();
+
+	printf("IP Header Creator -\n");
+	printf("Enter Source IP Address: ");
+
+	InputSource = GetInput();
+
+	printf("\nEnter Destination IP Address: ");
+
+	InputDestination = GetInput();
+
+	struct sockaddr_in SourceAddress;
+	struct sockaddr_in DestinationAddress;
+
+	inet_ntop(AF_INET, (struct sockaddr*)&SourceAddress.sin_addr.s_addr, InputSource, 16);
+	inet_ntop(AF_INET, (struct sockaddr*)&DestinationAddress.sin_addr.s_addr, InputDestination, 16);
+
+	free(InputSource);
+	free(InputDestination);
+
+	IP_HEADER* Result = NULL;
+
+	if (IsRawSocket == 1)
+	{
+		IP_HEADER* Result = CreateIPHeader(IPPROTO_TCP, ntohl(SourceAddress.sin_addr.s_addr), ntohl(DestinationAddress.sin_addr.s_addr), 0);
+	}
+
+	else
+	{
+		IP_HEADER* Result = CreateIPHeader(Protocol, ntohl(SourceAddress.sin_addr.s_addr), ntohl(DestinationAddress.sin_addr.s_addr), 0);
+	}
+
+	return Result;
+}
+
+TCP_HEADER* MenuTCPHeader()
+{
+	char* InputSource = NULL;
+	char* InputDestination = NULL;
+
+	ClearScreen();
+
+	printf("TCP Header Creator -\n");
+	printf("Enter Source Port: ");
+
+	InputSource = GetInput();
+
+	printf("\nEnter Destination Port: ");
+
+	InputDestination = GetInput();
+
+	TCP_HEADER* Result = CreateTCPHeader(atoi(InputSource), atoi(InputDestination), 0, 0);
+
+	return Result;
+}
+
 void MenuSendPacket()
 {
 	MenuCreateSocket();
 	MenuBindSocket();
+
+	ETHERNET_HEADER* EthernetHeader = NULL;
+	IP_HEADER* IPHeader = NULL;
+	TCP_HEADER* TCPHeader = NULL;
+
+	if (IsRawSocket == 1)
+	{
+		EthernetHeader = MenuEthernetHeader();
+	}
+
+	IPHeader = MenuIPHeader();
+	TCPHeader = MenuTCPHeader();
+
+	if (IsRawSocket == 1)
+	{
+		Packet* Pack = CreateTCPPacket(EthernetHeader, IPHeader, TCPHeader, NULL, 0);
+
+		if (SendPacketRaw(Socket, Pack) != 0)
+		{
+			printf("Failed to Send Packet\n");
+		}
+
+		CleanupPacket(Pack);
+		free(Pack);
+	}
+
+	else
+	{
+		if (SendPacket(Socket, ntohl(IPHeader->daddr), ntohl(TCPHeader->dest), NULL, 0) != 0)
+		{
+			printf("Failed to Send Packet\n");
+		}
+	}
 
 	ShutdownSocket(Socket);
 

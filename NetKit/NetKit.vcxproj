@@ -130,7 +130,9 @@
     <ClInclude Include="TCP.h" />
     <ClInclude Include="TCPHeader.h" />
     <ClInclude Include="Unix\UnixSetup.h" />
+    <ClInclude Include="Unix\UnixUtils.h" />
     <ClInclude Include="Windows\WindowsSetup.h" />
+    <ClInclude Include="Windows\WindowsUtils.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

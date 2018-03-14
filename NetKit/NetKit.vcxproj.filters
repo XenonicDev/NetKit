@@ -65,5 +65,11 @@
     <ClInclude Include="Ethernet.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Windows\WindowsUtils.h">
+      <Filter>Source Files\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="Unix\UnixUtils.h">
+      <Filter>Source Files\Unix</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
