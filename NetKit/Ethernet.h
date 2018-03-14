@@ -5,7 +5,7 @@
 
 #include "EthernetHeader.h"
 
-struct ETHERNET_HEADER* CreateEthernetHeader(char* SourceMACAddress, char* DestinationMACAddress, int Protocol)
+ETHERNET_HEADER* CreateEthernetHeader(char* SourceMACAddress, char* DestinationMACAddress, int Protocol)
 {
 	ETHERNET_HEADER* Result;
 

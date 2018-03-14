@@ -61,11 +61,11 @@ void Pause()
 #endif
 }
 
-struct ConnectionData
+typedef struct
 {
 	unsigned long int SourceAddress;
 	unsigned long int DestinationAddress;
-};
+} ConnectionData;
 
 char* AddressToString(unsigned long int Address)
 {
@@ -91,9 +91,9 @@ char* GetHostName()
 	return Result;
 }
 
-struct ConnectionData GetSocketConnectionInfo(int Socket)
+ConnectionData GetSocketConnectionInfo(int Socket)
 {
-	struct ConnectionData Result;
+	ConnectionData Result;
 	Result.SourceAddress = 0;
 	Result.DestinationAddress = 0;
 
