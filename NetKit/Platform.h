@@ -8,14 +8,14 @@
 #if defined(_WIN32) || defined(_WIN64)
 #define PLATFORM_WINDOWS
 
-#error Windows Is Not Yet Supported
-
 #include <WinSock2.h>
 #include <WS2tcpip.h>
 #include <iphlpapi.h>
+#include <Mstcpip.h>
 
 #pragma comment(lib, "Ws2_32.lib")
 #pragma comment(lib, "IPHLPAPI.lib")
+#pragma comment(lib, "Ntdll.dll")
 #else
 #define PLATFORM_UNIX
 

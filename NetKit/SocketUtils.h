@@ -6,15 +6,29 @@
 #include "Platform.h"
 #include "Packet.h"
 
+#include "SysUtils.h"
+
 #include <stdlib.h>
 #include <stdio.h>
+
+#ifdef PLATFORM_WINDOWS
+#include "Windows/WindowsUtils.h"
+
+pcap_t* Pcap;
+#endif
 
 int CreateSocket(int Protocol)
 {
 	int Result = socket(AF_INET, (Protocol == IPPROTO_UDP ? SOCK_DGRAM : SOCK_STREAM), Protocol);
 	if (Result == -1)
 	{
-		printf("CreateSocket Failed. Error: %s\n", strerror(errno));
+		char* Error = ErrorString(errno);
+
+		printf("CreateSocket Failed. Error: %s\n", Error);
+
+#ifdef PLATFORM_WINDOWS
+		free(Error);
+#endif
 
 		return -1;
 	}
@@ -23,6 +37,11 @@ int CreateSocket(int Protocol)
 }
 
 int CreateSocketRaw(int Protocol, int CustomHeaders)
+#ifdef PLATFORM_WINDOWS
+{
+	return 0;
+}
+#else
 {
 	int Result = socket(AF_PACKET, SOCK_RAW, htons(Protocol));
 	if (Result == -1)
@@ -46,6 +65,7 @@ int CreateSocketRaw(int Protocol, int CustomHeaders)
 
 	return Result;
 }
+#endif
 
 int BindSocket(int Socket, unsigned long Address, int Port)
 {
@@ -56,7 +76,13 @@ int BindSocket(int Socket, unsigned long Address, int Port)
 
 	if (bind(Socket, (struct sockaddr*)&Data, sizeof(Data)) != 0)
 	{
-		printf("BindSocket Failed. Error: %s\n", strerror(errno));
+		char* Error = ErrorString(errno);
+
+		printf("BindSocket Failed. Error: %s\n", Error);
+
+#ifdef PLATFORM_WINDOWS
+		free(Error);
+#endif
 
 		return -1;
 	}
@@ -65,6 +91,11 @@ int BindSocket(int Socket, unsigned long Address, int Port)
 }
 
 int BindSocketRaw(int Socket, char* Device, int Protocol)
+#ifdef PLATFORM_WINDOWS
+{
+	Pcap = pcap_open(Device, 100, PCAP_OPENFLAG_PROMISCUOUS, 1000, NULL, NULL);
+}
+#else
 {
 	struct sockaddr_ll LinkLayerAddress;
 	struct ifreq ifr;
@@ -94,6 +125,7 @@ int BindSocketRaw(int Socket, char* Device, int Protocol)
 
 	return 0;
 }
+#endif
 
 int SendPacket(int Socket, unsigned long DestinationAddress, int DestinationPort, unsigned char* Payload, size_t PayloadLength)
 {
@@ -112,6 +144,11 @@ int SendPacket(int Socket, unsigned long DestinationAddress, int DestinationPort
 }
 
 int SendPacketRaw(int Socket, Packet* TargetPacket)
+#ifdef PLATFORM_WINDOWS
+{
+	pcap_sendpacket(Pcap, TargetPacket->Raw, TargetPacket->Length);
+}
+#else
 {
 	int Sent = write(Socket, TargetPacket->Raw, (int)TargetPacket->Length);
 
@@ -122,6 +159,7 @@ int SendPacketRaw(int Socket, Packet* TargetPacket)
 
 	return 0;
 }
+#endif
 
 void ShutdownSocket(int Socket)
 {

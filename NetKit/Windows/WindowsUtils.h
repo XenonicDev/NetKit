@@ -2,6 +2,10 @@
 
 #include "../Platform.h"
 
+#define HAVE_REMOTE
+
+#include "pcap/pcap.h"
+
 char* GetDefaultGateway()
 {
 	PIP_ADAPTER_INFO Adapter;
@@ -13,7 +17,7 @@ char* GetDefaultGateway()
 	{
 		char* Result = (char*)malloc(16);
 
-		strncpy(Result, Adapter->GatewayList.IpAddress.String, 16);
+		strncpy_s(Result, 16, Adapter->GatewayList.IpAddress.String, 16);
 
 		free(Adapter);
 

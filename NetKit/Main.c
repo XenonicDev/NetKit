@@ -56,9 +56,14 @@ void MenuCreateSocket()
 		ClearScreen();
 
 		printf("Socket Protocol Selector -\n");
-		printf("1. Raw (ETH_P_ALL)\n");
+#ifdef PLATFORM_WINDOWS
+		printf("1. TCP\n");
+		printf("2. UDP\n");
+#else
+		printf("1. Raw\n");
 		printf("2. TCP\n");
 		printf("3. UDP\n");
+#endif
 
 		Input = GetInput();
 
@@ -77,6 +82,19 @@ void MenuCreateSocket()
 
 	free(Input);
 
+#ifdef PLATFORM_WINDOWS
+	if (Protocol == 1)
+	{
+		Protocol = IPPROTO_TCP;
+		IsRawSocket = 0;
+	}
+
+	else
+	{
+		Protocol = IPPROTO_UDP;
+		IsRawSocket = 0;
+	}
+#else
 	if (Protocol == 1)
 	{
 		Protocol = ETH_P_ALL;
@@ -94,6 +112,7 @@ void MenuCreateSocket()
 		Protocol = IPPROTO_UDP;
 		IsRawSocket = 0;
 	}
+#endif
 
 	if (IsRawSocket == 1)
 	{

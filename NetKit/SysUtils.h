@@ -8,6 +8,17 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+char* ErrorString(int ErrorCode)
+{
+#ifdef PLATFORM_WINDOWS
+	char* Result = (char*)malloc(128);
+
+	return strerror_s(Result, 128, ErrorCode);
+#else
+	return strerror(ErrorCode);
+#endif
+}
+
 char* GetInput()
 {
 	char* line = (char*)malloc(100), *linep = line;
@@ -74,7 +85,7 @@ char* AddressToString(unsigned long int Address)
 	struct sockaddr_in AddressAsSockaddr;
 	AddressAsSockaddr.sin_addr.s_addr = Address;
 
-	inet_ntop(AF_PACKET, &AddressAsSockaddr, Result, INET_ADDRSTRLEN);
+	inet_ntop(AF_INET, &AddressAsSockaddr, Result, INET_ADDRSTRLEN);
 
 	return Result;
 }
@@ -85,7 +96,13 @@ char* GetHostName()
 
 	if (gethostname(Result, 128) != 0)
 	{
-		printf("GetHostName Failed. Error: %s\n", strerror(errno));
+		char* Error = ErrorString(errno);
+
+		printf("GetHostName Failed. Error: %s\n", Error);
+
+#ifdef PLATFORM_WINDOWS
+		free(Error);
+#endif
 	}
 
 	return Result;
@@ -105,7 +122,13 @@ ConnectionData GetSocketConnectionInfo(int Socket)
 
 	if (getsockname(Socket, (struct sockaddr*)&SourceAddr, &SourceAddrLength) != 0)
 	{
-		printf("GetSocketConnectionInfo Failed. Error: %s\n", strerror(errno));
+		char* Error = ErrorString(errno);
+
+		printf("GetSocketConnectionInfo Failed. Error: %s\n", Error);
+
+#ifdef PLATFORM_WINDOWS
+		free(Error);
+#endif
 
 		return Result;
 	}
@@ -114,7 +137,13 @@ ConnectionData GetSocketConnectionInfo(int Socket)
 
 	if (getpeername(Socket, (struct sockaddr*)&DestAddr, &DestAddrLength) != 0)
 	{
-		printf("GetSocketConnectionInfo Failed. Error: %s\n", strerror(errno));
+		char* Error = ErrorString(errno);
+
+		printf("GetSocketConnectionInfo Failed. Error: %s\n", Error);
+
+#ifdef PLATFORM_WINDOWS
+		free(Error);
+#endif
 
 		return Result;
 	}
