@@ -193,7 +193,7 @@ ETHERNET_HEADER* MenuEthernetHeader()
 
 	InputDestination = GetInput();
 
-	ETHERNET_HEADER* Result = CreateEthernetHeader(InputSource, InputDestination, ETHERTYPE_IP);
+	ETHERNET_HEADER* Result = CreateEthernetHeader(InputSource, InputDestination, 0x0800);  // ETHERTYPE_IP (IPv4)
 
 	free(InputSource);
 	free(InputDestination);
