@@ -7,8 +7,31 @@
 
 #include <stdio.h>
 
+struct ifaddrs* GetNetworkDevices()
+{
+	struct ifaddrs* Result = (struct ifaddrs*)malloc(sizeof(struct ifaddrs));
+
+	getifaddrs(&Result);
+
+	return Result;
+}
+
 int PrintNetworkDevices()
 {
+	struct ifaddrs* Addresses = GetNetworkDevices();
+
+	printf("Network Devices -\n");
+
+	int Iter = 1;
+	for (struct ifaddrs* Address = Addresses; Address; Address = Address->ifa_next)
+	{
+		printf(" %d. %s\n", Iter, Address->ifa_name);
+
+		++Iter;
+	}
+
+	free(Addresses);
+
 	return 0;
 }
 
