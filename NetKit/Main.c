@@ -152,7 +152,7 @@ void MenuBindSocket()
 			{
 				DeviceName = Device->name;
 				
-				GetMACAddress(ntohl(((struct sockaddr_in*)&Device->addresses->addr)->sin_addr.s_addr), InterfaceMAC);
+				GetMACAddress(ntohl(((struct sockaddr_in*)Device->addresses->addr)->sin_addr.s_addr), InterfaceMAC);
 
 				break;
 			}
