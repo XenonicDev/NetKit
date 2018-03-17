@@ -28,5 +28,6 @@
 #include <linux/ip.h>
 #include <linux/tcp.h>
 #include <arpa/inet.h>
+#include <ifaddrs.h>
 #include <string.h>  // bzero(), strncpy_s(), strtok_r()
 #endif
