@@ -263,12 +263,12 @@ IP_HEADER* MenuIPHeader()
 
 	if (IsRawSocket == 1)
 	{
-		IP_HEADER* Result = CreateIPHeader(IPPROTO_TCP, ntohl(SourceAddress.sin_addr.s_addr), ntohl(DestinationAddress.sin_addr.s_addr), 0);
+		Result = CreateIPHeader(IPPROTO_TCP, ntohl(SourceAddress.sin_addr.s_addr), ntohl(DestinationAddress.sin_addr.s_addr), 0);
 	}
 
 	else
 	{
-		IP_HEADER* Result = CreateIPHeader(Protocol, ntohl(SourceAddress.sin_addr.s_addr), ntohl(DestinationAddress.sin_addr.s_addr), 0);
+		Result = CreateIPHeader(Protocol, ntohl(SourceAddress.sin_addr.s_addr), ntohl(DestinationAddress.sin_addr.s_addr), 0);
 	}
 
 	return Result;
