@@ -143,16 +143,22 @@ void MenuBindSocket()
 #ifdef PLATFORM_WINDOWS
 		pcap_if_t* Devices = GetNetworkDevices();
 
-		pcap_if_t* Device = Devices->next;
-
 		int Iter = 1;
-		for (; Device; Device = Device->next)
+		for (pcap_if_t* Device = Devices->next; Device; Device = Device->next)
 		{
 			if (atoi(Input) == Iter)
 			{
 				DeviceName = Device->name;
-				
-				GetMACAddress(ntohl(((struct sockaddr_in*)Device->addresses->addr)->sin_addr.s_addr), InterfaceMAC);
+
+				for (pcap_addr_t* DeviceAddress = Device->addresses; DeviceAddress; DeviceAddress = DeviceAddress->next)
+				{
+					if (DeviceAddress->addr->sa_family == AF_INET && DeviceAddress->addr && DeviceAddress->netmask)
+					{
+						GetMACAddress(ntohl(((struct sockaddr_in*)Device->addresses->addr)->sin_addr.s_addr), InterfaceMAC);
+
+						break;
+					}
+				}
 
 				break;
 			}
