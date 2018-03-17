@@ -54,9 +54,9 @@ int GetMACAddress(unsigned long Address, unsigned char* Result)
 	ULONG MACAddress[2];
 	ULONG PhysicalAddressLength = 6;
 
-	DWORD b = SendARP(htonl(Address), 0, MACAddress, &PhysicalAddressLength);
+	DWORD Error = SendARP(htonl(Address), 0, MACAddress, &PhysicalAddressLength);
 
-	if (b != NO_ERROR)
+	if (Error != NO_ERROR)
 	{
 		printf("GetMACAddress Failed.\n");
 
