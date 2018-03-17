@@ -165,7 +165,21 @@ void MenuBindSocket()
 
 			++Iter;
 		}
+
+		free(Devices);
 #else
+		struct ifaddrs* Devices = GetNetworkDevices();
+
+		int Iter = 1;
+		for (struct ifaddrs* Device = Devices; Device; Device = Device->ifa_next)
+		{
+			if (atoi(Input) == Iter)
+			{
+				strncpy(DeviceName, Device->ifa_name, 128);
+
+				break;
+			}
+		}
 #endif
 
 		if (BindSocketRaw(Socket, DeviceName, Protocol) != 0)
