@@ -121,7 +121,7 @@ int BindSocketRaw(int Socket, char* Device, int Protocol)
 
 	strncpy(ifr.ifr_name, Device, IFNAMSIZ - 1);
 
-	if (ioctl(Socket, SIOCGIFINDEX, &ifr) != 0)
+	if (ioctl(Socket, SIOCGIFINDEX, (void*)&ifr) != 0)
 	{
 		printf("BindSocketRaw Failed at Network Interface Index Retrieval. Error: %s\n", strerror(errno));
 
