@@ -338,6 +338,11 @@ void MenuSendPacket()
 		IP_HEADER* IPHeader = MenuIPHeader();
 		TCP_HEADER* TCPHeader = MenuTCPHeader();
 
+		if (!EthernetHeader || !IPHeader || !TCPHeader)
+		{
+			FatalError();
+		}
+
 		Packet* Pack = CreateTCPPacket(EthernetHeader, IPHeader, TCPHeader, NULL, 0);
 
 		if (SendPacketRaw(Socket, Pack) != 0)
