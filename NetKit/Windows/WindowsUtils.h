@@ -49,17 +49,17 @@ int PrintNetworkDevices()
 
 char* GetDefaultGateway()
 {
-	PIP_ADAPTER_INFO Adapter;
+	PIP_ADAPTER_INFO Adapters;
 	ULONG Size = sizeof(IP_ADAPTER_INFO);
 
-	Adapter = (PIP_ADAPTER_INFO)malloc(Size);
+	Adapters = (PIP_ADAPTER_INFO)malloc(Size);
 
 	// Get Size Needed.
-	if (GetAdaptersInfo(Adapter, &Size) == ERROR_BUFFER_OVERFLOW)
+	if (GetAdaptersInfo(Adapters, &Size) == ERROR_BUFFER_OVERFLOW)
 	{
-		free(Adapter);
+		free(Adapters);
 
-		Adapter = (PIP_ADAPTER_INFO)malloc(Size);
+		Adapters = (PIP_ADAPTER_INFO)malloc(Size);
 	}
 
 	else
@@ -67,13 +67,22 @@ char* GetDefaultGateway()
 		return NULL;
 	}
 
-	if (GetAdaptersInfo(Adapter, &Size) == NO_ERROR)
+	if (GetAdaptersInfo(Adapters, &Size) == NO_ERROR)
 	{
 		char* Result = (char*)malloc(16);
 
-		strncpy_s(Result, 16, Adapter->GatewayList.IpAddress.String, 16);
+		// Default to 0.0.0.0
+		strcpy_s(Result, 16, "0.0.0.0");
 
-		free(Adapter);
+		for (PIP_ADAPTER_INFO Adapter = Adapters; Adapter; Adapter = Adapter->Next)
+		{
+			if (strcmp(Adapter->GatewayList.IpAddress.String, "0.0.0.0") != 0)
+			{
+				strncpy_s(Result, 16, Adapter->GatewayList.IpAddress.String, 16);
+			}
+		}
+
+		free(Adapters);
 
 		return Result;
 	}
