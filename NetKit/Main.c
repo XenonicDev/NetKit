@@ -452,6 +452,72 @@ void MenuLaunchPacketPump()
 	MenuCreateSocket();
 	MenuBindSocket();
 
+	char* Input = NULL;
+
+	printf("Enter Number of Packets to Send (0 for Infinite): ");
+
+	Input = GetInput();
+
+	int Count = atoi(Input);
+
+	free(Input);
+
+	if (IsRawSocket == 1)
+	{
+		ETHERNET_HEADER* EthernetHeader = MenuEthernetHeader();
+		IP_HEADER* IPHeader = MenuIPHeader();
+		TCP_HEADER* TCPHeader = MenuTCPHeader();
+
+		if (!EthernetHeader || !IPHeader || !TCPHeader)
+		{
+			FatalError();
+		}
+
+		Packet* Pack = CreateTCPPacket(EthernetHeader, IPHeader, TCPHeader, NULL, 0);
+
+		if (Count == 0)
+		{
+			int Iter = 0;
+
+			while (1)
+			{
+				if (SendPacketRaw(Socket, Pack) != 0)
+				{
+					printf("Failed to Send Packet #%d\n", Iter + 1);
+				}
+
+				++Iter;
+			}
+		}
+
+		else
+		{
+			for (int Iter = 0; Iter < Count; ++Iter)
+			{
+				if (SendPacketRaw(Socket, Pack) != 0)
+				{
+					printf("Failed to Send Packet #%d\n", Iter + 1);
+				}
+			}
+		}
+
+		CleanupPacket(Pack);
+		free(Pack);
+	}
+
+	else
+	{
+		ClearScreen();
+
+		unsigned long Address = MenuGetDestinationAddress();
+		int Port = MenuGetDestinationPort();
+
+		if (SendPacket(Socket, ntohl(Address), Port, NULL, 0) != 0)
+		{
+			printf("Failed to Send Packet\n");
+		}
+	}
+
 	ShutdownSocket(Socket);
 
 	Pause();
