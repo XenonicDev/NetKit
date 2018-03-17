@@ -13,7 +13,15 @@ char* ErrorString(int ErrorCode)
 #ifdef PLATFORM_WINDOWS
 	char* Result = (char*)malloc(128);
 
-	return strerror_s(Result, 128, ErrorCode);
+	strerror_s(Result, 128, ErrorCode);
+
+	// No Error, Try WinSock Error Fetch.
+	if (strcmp(Result, "") == 0)
+	{
+		_itoa_s(WSAGetLastError(), Result, 128, 10);
+	}
+
+	return Result;
 #else
 	return strerror(ErrorCode);
 #endif

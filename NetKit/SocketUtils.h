@@ -137,6 +137,14 @@ int SendPacket(int Socket, unsigned long DestinationAddress, int DestinationPort
 
 	if (Sent != (int)PayloadLength)
 	{
+		char* Error = ErrorString(errno);
+
+		printf("SendPacket Failed. Error: %s\n", Error);
+
+#ifdef PLATFORM_WINDOWS
+		free(Error);
+#endif
+
 		return -1;
 	}
 
