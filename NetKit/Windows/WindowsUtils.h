@@ -36,9 +36,12 @@ int PrintNetworkDevices()
 
 	printf("Network Devices -\n");
 	
+	int Iter = 1;
 	for (Device = Devices->next; Device; Device = Device->next)
 	{
-		printf("  %s | %.30s...\n", Device->name, Device->description);
+		printf(" %d. %s | %.30s...\n", Iter, Device->name, Device->description);
+
+		++Iter;
 	}
 
 	free(Devices);

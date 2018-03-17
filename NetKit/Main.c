@@ -136,7 +136,29 @@ void MenuBindSocket()
 
 		Input = GetInput();
 
-		if (BindSocketRaw(Socket, Input, Protocol) != 0)
+		char* DeviceName = NULL;
+
+#ifdef PLATFORM_WINDOWS
+		pcap_if_t* Devices = GetNetworkDevices();
+
+		pcap_if_t* Device = Devices->next;
+
+		int Iter = 1;
+		for (; Device; Device = Device->next)
+		{
+			if (atoi(Input) == Iter)
+			{
+				DeviceName = Device->name;
+
+				break;
+			}
+
+			++Iter;
+		}
+#else
+#endif
+
+		if (BindSocketRaw(Socket, DeviceName, Protocol) != 0)
 		{
 			FatalError();
 		}
