@@ -17,6 +17,12 @@
 pcap_t* Pcap;
 #endif
 
+typedef struct
+{
+	unsigned long int SourceAddress;
+	unsigned long int DestinationAddress;
+} ConnectionData;
+
 int CreateSocket(int Protocol)
 {
 	int Result = socket(AF_INET, (Protocol == IPPROTO_UDP ? SOCK_DGRAM : SOCK_STREAM), Protocol);
@@ -128,6 +134,51 @@ int BindSocketRaw(int Socket, char* Device, int Protocol)
 	return 0;
 }
 #endif
+
+ConnectionData GetSocketConnectionInfo(int Socket)
+{
+	ConnectionData Result;
+	Result.SourceAddress = 0;
+	Result.DestinationAddress = 0;
+
+	struct sockaddr_in SourceAddr;
+	int SourceAddrLength = sizeof(SourceAddr);
+
+	struct sockaddr_in DestAddr;
+	int DestAddrLength = sizeof(DestAddr);
+
+	if (getsockname(Socket, (struct sockaddr*)&SourceAddr, &SourceAddrLength) != 0)
+	{
+		char* Error = ErrorString(errno);
+
+		printf("GetSocketConnectionInfo Failed. Error: %s\n", Error);
+
+#ifdef PLATFORM_WINDOWS
+		free(Error);
+#endif
+
+		return Result;
+	}
+
+	Result.SourceAddress = SourceAddr.sin_addr.s_addr;
+
+	if (getpeername(Socket, (struct sockaddr*)&DestAddr, &DestAddrLength) != 0)
+	{
+		char* Error = ErrorString(errno);
+
+		printf("GetSocketConnectionInfo Failed. Error: %s\n", Error);
+
+#ifdef PLATFORM_WINDOWS
+		free(Error);
+#endif
+
+		return Result;
+	}
+
+	Result.DestinationAddress = DestAddr.sin_addr.s_addr;
+
+	return Result;
+}
 
 int SendPacket(int Socket, unsigned long DestinationAddress, int DestinationPort, unsigned char* Payload, size_t PayloadLength)
 {

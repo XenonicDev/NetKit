@@ -86,12 +86,6 @@ void Pause()
 #endif
 }
 
-typedef struct
-{
-	unsigned long int SourceAddress;
-	unsigned long int DestinationAddress;
-} ConnectionData;
-
 char* AddressToString(unsigned long int Address)
 {
 	char* Result = (char*)malloc(INET_ADDRSTRLEN * sizeof(char));
@@ -118,51 +112,6 @@ char* GetHostName()
 		free(Error);
 #endif
 	}
-
-	return Result;
-}
-
-ConnectionData GetSocketConnectionInfo(int Socket)
-{
-	ConnectionData Result;
-	Result.SourceAddress = 0;
-	Result.DestinationAddress = 0;
-
-	struct sockaddr_in SourceAddr;
-	int SourceAddrLength = sizeof(SourceAddr);
-
-	struct sockaddr_in DestAddr;
-	int DestAddrLength = sizeof(DestAddr);
-
-	if (getsockname(Socket, (struct sockaddr*)&SourceAddr, &SourceAddrLength) != 0)
-	{
-		char* Error = ErrorString(errno);
-
-		printf("GetSocketConnectionInfo Failed. Error: %s\n", Error);
-
-#ifdef PLATFORM_WINDOWS
-		free(Error);
-#endif
-
-		return Result;
-	}
-
-	Result.SourceAddress = SourceAddr.sin_addr.s_addr;
-
-	if (getpeername(Socket, (struct sockaddr*)&DestAddr, &DestAddrLength) != 0)
-	{
-		char* Error = ErrorString(errno);
-
-		printf("GetSocketConnectionInfo Failed. Error: %s\n", Error);
-
-#ifdef PLATFORM_WINDOWS
-		free(Error);
-#endif
-
-		return Result;
-	}
-
-	Result.DestinationAddress = DestAddr.sin_addr.s_addr;
 
 	return Result;
 }
