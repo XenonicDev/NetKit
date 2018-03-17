@@ -22,6 +22,7 @@
 #include <sys/ioctl.h>
 #include <net/if.h>
 #include <net/ethernet.h>
+#include <netinet/ether.h>
 #include <linux/if_packet.h>
 #include <linux/if_ether.h>
 #include <linux/ip.h>
