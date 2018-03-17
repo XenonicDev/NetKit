@@ -215,7 +215,12 @@ int SendPacket(int Socket, unsigned long DestinationAddress, int DestinationPort
 int SendPacketRaw(int Socket, Packet* TargetPacket)
 #ifdef PLATFORM_WINDOWS
 {
-	pcap_sendpacket(Pcap, TargetPacket->Raw, TargetPacket->Length);
+	if (pcap_sendpacket(Pcap, TargetPacket->Raw, TargetPacket->Length) != 0)
+	{
+		printf("SendPacketRaw Failed. Error: %s\n", pcap_geterr(Pcap));
+
+		return -1;
+	}
 
 	return 0;
 }
