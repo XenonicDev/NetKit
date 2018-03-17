@@ -138,7 +138,7 @@ void MenuBindSocket()
 
 		Input = GetInput();
 
-		char* DeviceName = NULL;
+		char* DeviceName = (char*)malloc(128 * sizeof(char));
 
 #ifdef PLATFORM_WINDOWS
 		pcap_if_t* Devices = GetNetworkDevices();
@@ -148,7 +148,7 @@ void MenuBindSocket()
 		{
 			if (atoi(Input) == Iter)
 			{
-				DeviceName = Device->name;
+				strncpy_s(DeviceName, 128, Device->name, 128);
 
 				for (pcap_addr_t* DeviceAddress = Device->addresses; DeviceAddress; DeviceAddress = DeviceAddress->next)
 				{
@@ -172,6 +172,8 @@ void MenuBindSocket()
 		{
 			FatalError();
 		}
+
+		free(DeviceName);
 	}
 
 	else
