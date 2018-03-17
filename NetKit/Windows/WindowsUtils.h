@@ -6,27 +6,42 @@
 
 #include "pcap/pcap.h"
 
-int PrintNetworkDevices()
+// Grab a Linked List of Interfaces.
+pcap_if_t* GetNetworkDevices()
 {
+	pcap_if_t* Result = (pcap_if_t*)malloc(sizeof(pcap_if_t));
+
 	char ErrorBuffer[PCAP_ERRBUF_SIZE + 1];
 
-	pcap_if_t* Devices, *Device;
-
-	if (pcap_findalldevs_ex("rpcap://", NULL, &Devices, ErrorBuffer) == -1)
+	if (pcap_findalldevs_ex("rpcap://", NULL, Result, ErrorBuffer) == -1)
 	{
 		printf("GetNetworkDevices Failed. Error: %s\n", ErrorBuffer);
 
+		return NULL;
+	}
+
+	return Result;
+}
+
+int PrintNetworkDevices()
+{
+	pcap_if_t* Devices = GetNetworkDevices();
+
+	if (Devices == NULL)
+	{
 		return -1;
 	}
 
-	printf("Network Devices -\n");
+	pcap_if_t* Device;
 
-	for (Device = Devices; Device; Device = Device->next)
+	printf("Network Devices -\n");
+	
+	for (Device = Devices->next; Device; Device = Device->next)
 	{
-		printf("  %s\n", Device->name);
+		printf("  %s | %.30s...\n", Device->name, Device->description);
 	}
 
-	return 0;
+	free(Devices);
 }
 
 char* GetDefaultGateway()

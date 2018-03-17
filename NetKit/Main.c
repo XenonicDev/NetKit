@@ -132,7 +132,7 @@ void MenuBindSocket()
 
 	if (IsRawSocket == 1)
 	{
-		printf("Enter Network Interface Name: ");
+		printf("Enter Network Interface Index: ");
 
 		Input = GetInput();
 
