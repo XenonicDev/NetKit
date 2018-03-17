@@ -265,9 +265,9 @@ ETHERNET_HEADER* MenuEthernetHeader()
 	if (atoi(InputSource) == 0)
 	{
 #ifdef PLATFORM_WINDOWS
-		sprintf_s(SourceMAC, 18, "%d:%d:%d:%d:%d:%d", InterfaceMAC[0], InterfaceMAC[1], InterfaceMAC[2], InterfaceMAC[3], InterfaceMAC[4], InterfaceMAC[5]);
+		sprintf_s(SourceMAC, 18, "%.2X:%.2X:%.2X:%.2X:%.2X:%.2X", InterfaceMAC[0], InterfaceMAC[1], InterfaceMAC[2], InterfaceMAC[3], InterfaceMAC[4], InterfaceMAC[5]);
 #else
-		sprintf(SourceMAC, "%d:%d:%d:%d:%d:%d", InterfaceMAC[0], InterfaceMAC[1], InterfaceMAC[2], InterfaceMAC[3], InterfaceMAC[4], InterfaceMAC[5]);
+		sprintf(SourceMAC, "%.2X:%.2X:%.2X:%.2X:%.2X:%.2X", InterfaceMAC[0], InterfaceMAC[1], InterfaceMAC[2], InterfaceMAC[3], InterfaceMAC[4], InterfaceMAC[5]);
 #endif
 	}
 
@@ -285,7 +285,7 @@ ETHERNET_HEADER* MenuEthernetHeader()
 #ifdef PLATFORM_WINDOWS
 		sprintf_s(DestinationMAC, 18, "%.2X:%.2X:%.2X:%.2X:%.2X:%.2X", GatewayMAC[0], GatewayMAC[1], GatewayMAC[2], GatewayMAC[3], GatewayMAC[4], GatewayMAC[5]);
 #else
-		sprintf(DestinationMAC, "%d:%d:%d:%d:%d:%d", GatewayMAC[0], GatewayMAC[1], GatewayMAC[2], GatewayMAC[3], GatewayMAC[4], GatewayMAC[5]);
+		sprintf(DestinationMAC, "%.2X:%.2X:%.2X:%.2X:%.2X:%.2X", GatewayMAC[0], GatewayMAC[1], GatewayMAC[2], GatewayMAC[3], GatewayMAC[4], GatewayMAC[5]);
 #endif
 	}
 
