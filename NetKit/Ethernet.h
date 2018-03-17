@@ -21,8 +21,8 @@ ETHERNET_HEADER* CreateEthernetHeader(char* SourceMACAddress, char* DestinationM
 	memcpy(Result->h_source, SourceMAC, 6);
 	memcpy(Result->h_dest, DestinationMAC, 6);
 #else
-	struct ether_addr SourceMAC* = ether_aton(SourceMACAddress);
-	struct ether_addr DestinationMAC* = ether_aton(DestinationMACAddress);
+	struct ether_addr* SourceMAC = ether_aton(SourceMACAddress);
+	struct ether_addr* DestinationMAC = ether_aton(DestinationMACAddress);
 
 	memcpy(Result->h_source, SourceMAC->ether_addr_octet, 6);
 	memcpy(Result->h_dest, DestinationMAC->ether_addr_octet, 6);
