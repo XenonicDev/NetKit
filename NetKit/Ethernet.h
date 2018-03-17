@@ -12,8 +12,8 @@ ETHERNET_HEADER* CreateEthernetHeader(char* SourceMACAddress, char* DestinationM
 	Result = (ETHERNET_HEADER*)malloc(sizeof(ETHERNET_HEADER));
 
 #ifdef PLATFORM_WINDOWS
-	unsigned char SourceMAC[6];
-	unsigned char DestinationMAC[6];
+	unsigned char SourceMAC[6] = { 0, 0, 0, 0, 0, 0 };
+	unsigned char DestinationMAC[6] = { 0, 0, 0, 0, 0, 0 };
 
 	sscanf_s(SourceMACAddress, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx", &SourceMAC[0], &SourceMAC[1], &SourceMAC[2], &SourceMAC[3], &SourceMAC[4], &SourceMAC[5]);
 	sscanf_s(DestinationMACAddress, "%hhx:%hhx:%hhx:%hhx:%hhx:%hhx", &DestinationMAC[0], &DestinationMAC[1], &DestinationMAC[2], &DestinationMAC[3], &DestinationMAC[4], &DestinationMAC[5]);

@@ -219,7 +219,7 @@ ETHERNET_HEADER* MenuEthernetHeader()
 
 	if (InterfaceMAC[0] != 0 || InterfaceMAC[1] != 0 || InterfaceMAC[2] != 0 || InterfaceMAC[3] != 0 || InterfaceMAC[4] != 0 || InterfaceMAC[5] != 0)
 	{
-		printf("Enter Source MAC Address (0 to Use Selected Interface '%d:%d:%d:%d:%d:%d'): ", InterfaceMAC[0], InterfaceMAC[1], InterfaceMAC[2], InterfaceMAC[3], InterfaceMAC[4], InterfaceMAC[5]);
+		printf("Enter Source MAC Address (0 to Use Selected Interface '%.2X:%.2X:%.2X:%.2X:%.2X:%.2X'): ", InterfaceMAC[0], InterfaceMAC[1], InterfaceMAC[2], InterfaceMAC[3], InterfaceMAC[4], InterfaceMAC[5]);
 	}
 
 	else
@@ -234,12 +234,12 @@ ETHERNET_HEADER* MenuEthernetHeader()
 	char* DefaultGateway = GetDefaultGateway();
 	if (DefaultGateway)
 	{
-		struct sockaddr_in GatewayAddress;
+		unsigned long GatewayAddress;
 		inet_pton(AF_INET, DefaultGateway, &GatewayAddress);
 
-		if (GetMACAddress(ntohl(GatewayAddress.sin_addr.s_addr), GatewayMAC) == 0)
+		if (GetMACAddress(ntohl(GatewayAddress), GatewayMAC) == 0)
 		{
-			printf("Enter Destination MAC Address (0 to Use Predicted Default Gateway '%d:%d:%d:%d:%d:%d'): ", GatewayMAC[0], GatewayMAC[1], GatewayMAC[2], GatewayMAC[3], GatewayMAC[4], GatewayMAC[5]);
+			printf("Enter Destination MAC Address (0 to Use Predicted Default Gateway '%.2X:%.2X:%.2X:%.2X:%.2X:%.2X'): ", GatewayMAC[0], GatewayMAC[1], GatewayMAC[2], GatewayMAC[3], GatewayMAC[4], GatewayMAC[5]);
 		}
 
 		else
@@ -274,16 +274,16 @@ ETHERNET_HEADER* MenuEthernetHeader()
 	else
 	{
 #ifdef PLATFORM_WINDOWS
-		strncpy_s(SourceMAC, 18, InputSource, 18);
+		strncpy_s(SourceMAC, 18, InputSource, strlen(InputSource) - 1);
 #else
-		strncpy(SourceMAC, InputSource, strlen(InputSource));
+		strncpy(SourceMAC, InputSource, strlen(InputSource) - 1);
 #endif
 	}
 
 	if (atoi(InputDestination) == 0)
 	{
 #ifdef PLATFORM_WINDOWS
-		sprintf_s(DestinationMAC, 18, "%d:%d:%d:%d:%d:%d", GatewayMAC[0], GatewayMAC[1], GatewayMAC[2], GatewayMAC[3], GatewayMAC[4], GatewayMAC[5]);
+		sprintf_s(DestinationMAC, 18, "%.2X:%.2X:%.2X:%.2X:%.2X:%.2X", GatewayMAC[0], GatewayMAC[1], GatewayMAC[2], GatewayMAC[3], GatewayMAC[4], GatewayMAC[5]);
 #else
 		sprintf(DestinationMAC, "%d:%d:%d:%d:%d:%d", GatewayMAC[0], GatewayMAC[1], GatewayMAC[2], GatewayMAC[3], GatewayMAC[4], GatewayMAC[5]);
 #endif
@@ -292,9 +292,9 @@ ETHERNET_HEADER* MenuEthernetHeader()
 	else
 	{
 #ifdef PLATFORM_WINDOWS
-		strncpy_s(DestinationMAC, 18, InputDestination, 18);
+		strncpy_s(DestinationMAC, 18, InputDestination, strlen(InputDestination) - 1);
 #else
-		strncpy(DestinationMAC, InputDestination, strlen(InputDestination));
+		strncpy(DestinationMAC, InputDestination, strlen(InputDestination) - 1);
 #endif
 	}
 
