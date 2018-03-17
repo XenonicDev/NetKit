@@ -285,25 +285,49 @@ TCP_HEADER* MenuTCPHeader()
 	return Result;
 }
 
+unsigned long MenuGetDestinationAddress()
+{
+	char* Input = NULL;
+
+	printf("Enter Destination Address: ");
+
+	Input = GetInput();
+
+	struct sockaddr_in Address;
+
+	inet_ntop(AF_INET, (struct sockaddr*)&Address, Input, sizeof(Address));
+
+	free(Input);
+
+	return Address.sin_addr.s_addr;
+}
+
+unsigned short MenuGetDestinationPort()
+{
+	char* Input = NULL;
+
+	printf("Enter Destination Port: ");
+
+	Input = GetInput();
+
+	int Port = atoi(Input);
+
+	free(Input);
+
+	return Port;
+}
+
 void MenuSendPacket()
 {
 	MenuCreateSocket();
 	MenuBindSocket();
 
-	ETHERNET_HEADER* EthernetHeader = NULL;
-	IP_HEADER* IPHeader = NULL;
-	TCP_HEADER* TCPHeader = NULL;
-
 	if (IsRawSocket == 1)
 	{
-		EthernetHeader = MenuEthernetHeader();
-	}
+		ETHERNET_HEADER* EthernetHeader = MenuEthernetHeader();
+		IP_HEADER* IPHeader = MenuIPHeader();
+		TCP_HEADER* TCPHeader = MenuTCPHeader();
 
-	IPHeader = MenuIPHeader();
-	TCPHeader = MenuTCPHeader();
-
-	if (IsRawSocket == 1)
-	{
 		Packet* Pack = CreateTCPPacket(EthernetHeader, IPHeader, TCPHeader, NULL, 0);
 
 		if (SendPacketRaw(Socket, Pack) != 0)
@@ -317,7 +341,12 @@ void MenuSendPacket()
 
 	else
 	{
-		if (SendPacket(Socket, ntohl(IPHeader->daddr), ntohl(TCPHeader->dest), NULL, 0) != 0)
+		ClearScreen();
+
+		unsigned long Address = MenuGetDestinationAddress();
+		unsigned short Port = MenuGetDestinationPort();
+
+		if (SendPacket(Socket, ntohl(Address), Port, NULL, 0) != 0)
 		{
 			printf("Failed to Send Packet\n");
 		}
