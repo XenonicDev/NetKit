@@ -94,6 +94,8 @@ int BindSocketRaw(int Socket, char* Device, int Protocol)
 #ifdef PLATFORM_WINDOWS
 {
 	Pcap = pcap_open(Device, 100, PCAP_OPENFLAG_PROMISCUOUS, 1000, NULL, NULL);
+
+	return 0;
 }
 #else
 {
@@ -155,6 +157,8 @@ int SendPacketRaw(int Socket, Packet* TargetPacket)
 #ifdef PLATFORM_WINDOWS
 {
 	pcap_sendpacket(Pcap, TargetPacket->Raw, TargetPacket->Length);
+
+	return 0;
 }
 #else
 {
