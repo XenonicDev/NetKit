@@ -99,7 +99,15 @@ int BindSocket(int Socket, unsigned long Address, int Port)
 int BindSocketRaw(int Socket, char* Device, int Protocol)
 #ifdef PLATFORM_WINDOWS
 {
-	Pcap = pcap_open(Device, 100, PCAP_OPENFLAG_PROMISCUOUS, 1000, NULL, NULL);
+	char ErrorBuffer[PCAP_ERRBUF_SIZE + 1];
+
+	Pcap = pcap_open(Device, 100, PCAP_OPENFLAG_PROMISCUOUS, 1000, NULL, ErrorBuffer);
+	if (!Pcap)
+	{
+		printf("BindSocketRaw Failed. Error: %s\n", ErrorBuffer);
+
+		return -1;
+	}
 
 	return 0;
 }

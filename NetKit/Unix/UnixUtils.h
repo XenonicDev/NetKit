@@ -4,6 +4,11 @@
 
 #include <stdio.h>
 
+int PrintNetworkDevices()
+{
+	return 0;
+}
+
 char* GetDefaultGateway()
 {
 	char* Result = NULL;
