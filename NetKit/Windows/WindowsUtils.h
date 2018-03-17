@@ -45,6 +45,35 @@ int PrintNetworkDevices()
 	}
 
 	free(Devices);
+
+	return 0;
+}
+
+int GetMACAddress(unsigned long Address, unsigned char* Result)
+{
+	ULONG MACAddress[2];
+	ULONG PhysicalAddressLength = 6;
+
+	DWORD b = SendARP(htonl(Address), 0, MACAddress, &PhysicalAddressLength);
+
+	if (b != NO_ERROR)
+	{
+		printf("GetMACAddress Failed.\n");
+
+		return -1;
+	}
+
+	if (PhysicalAddressLength != 0)
+	{
+		BYTE* MACByteIter = (BYTE*)MACAddress;
+
+		for (int Iter = 0; Iter < PhysicalAddressLength; ++Iter)
+		{
+			Result[Iter] = (unsigned char)MACByteIter[Iter];
+		}
+	}
+
+	return 0;
 }
 
 char* GetDefaultGateway()

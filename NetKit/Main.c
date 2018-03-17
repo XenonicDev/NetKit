@@ -20,6 +20,8 @@ int Socket;
 int IsRawSocket;
 int Protocol;
 
+unsigned char InterfaceMAC[6] = { 0, 0, 0, 0, 0, 0 };
+
 void FatalError()
 {
 	printf("\n\n-- Fatal Error Occurred, Closing --\n\n");
@@ -149,6 +151,8 @@ void MenuBindSocket()
 			if (atoi(Input) == Iter)
 			{
 				DeviceName = Device->name;
+				
+				GetMACAddress(ntohl(((struct sockaddr_in*)&Device->addresses->addr)->sin_addr.s_addr), InterfaceMAC);
 
 				break;
 			}
@@ -204,32 +208,95 @@ ETHERNET_HEADER* MenuEthernetHeader()
 	ClearScreen();
 
 	printf("Ethernet Header Creator -\n");
-	printf("Enter Source MAC Address (0 for Automatic Assignment): ");
 
-	InputSource = GetInput();
-
-	char* DefaultGateway = GetDefaultGateway();
-	if (DefaultGateway)
+	if (InterfaceMAC[0] != 0 || InterfaceMAC[1] != 0 || InterfaceMAC[2] != 0 || InterfaceMAC[3] != 0 || InterfaceMAC[4] != 0 || InterfaceMAC[5] != 0)
 	{
-		printf("Predicted Default Gateway: %s\n", DefaultGateway);
-
-		free(DefaultGateway);
-
-		printf("Enter Destination MAC Address (0 to Use Predicted Default Gateway): ");
+		printf("Enter Source MAC Address (0 to Use Selected Interface '%d:%d:%d:%d:%d:%d'): ", InterfaceMAC[0], InterfaceMAC[1], InterfaceMAC[2], InterfaceMAC[3], InterfaceMAC[4], InterfaceMAC[5]);
 	}
 
 	else
 	{
-		printf("Could Not Determine Default Gateway.\n");
+		printf("Enter Source MAC Address: ");
+	}
+
+	InputSource = GetInput();
+
+	unsigned char GatewayMAC[6] = { 0, 0, 0, 0, 0, 0 };
+
+	char* DefaultGateway = GetDefaultGateway();
+	if (DefaultGateway)
+	{
+		struct sockaddr_in GatewayAddress;
+		inet_pton(AF_INET, DefaultGateway, &GatewayAddress);
+
+		if (GetMACAddress(ntohl(GatewayAddress.sin_addr.s_addr), GatewayMAC) == 0)
+		{
+			printf("Enter Destination MAC Address (0 to Use Predicted Default Gateway '%d:%d:%d:%d:%d:%d'): ", GatewayMAC[0], GatewayMAC[1], GatewayMAC[2], GatewayMAC[3], GatewayMAC[4], GatewayMAC[5]);
+		}
+
+		else
+		{
+			printf("Enter Destination MAC Address: ");
+		}
+
+		free(DefaultGateway);
+	}
+
+	else
+	{
 		printf("Enter Destination MAC Address: ");
 	}
 
 	InputDestination = GetInput();
 
-	ETHERNET_HEADER* Result = CreateEthernetHeader(InputSource, InputDestination, 0x0800);  // ETHERTYPE_IP (IPv4)
+	ETHERNET_HEADER* Result = NULL;
+
+	char* SourceMAC = (char*)malloc(18 * sizeof(char));
+	char* DestinationMAC = (char*)malloc(18 * sizeof(char));
+
+	if (atoi(InputSource) == 0)
+	{
+#ifdef PLATFORM_WINDOWS
+		sprintf_s(SourceMAC, 18, "%d:%d:%d:%d:%d:%d", InterfaceMAC[0], InterfaceMAC[1], InterfaceMAC[2], InterfaceMAC[3], InterfaceMAC[4], InterfaceMAC[5]);
+#else
+		sprintf(SourceMAC, "%d:%d:%d:%d:%d:%d", InterfaceMAC[0], InterfaceMAC[1], InterfaceMAC[2], InterfaceMAC[3], InterfaceMAC[4], InterfaceMAC[5]);
+#endif
+	}
+
+	else
+	{
+#ifdef PLATFORM_WINDOWS
+		strncpy_s(SourceMAC, 18, InputSource, 18);
+#else
+		strncpy(SourceMAC, InputSource, strlen(InputSource));
+#endif
+	}
+
+	if (atoi(InputDestination) == 0)
+	{
+#ifdef PLATFORM_WINDOWS
+		sprintf_s(DestinationMAC, 18, "%d:%d:%d:%d:%d:%d", GatewayMAC[0], GatewayMAC[1], GatewayMAC[2], GatewayMAC[3], GatewayMAC[4], GatewayMAC[5]);
+#else
+		sprintf(DestinationMAC, "%d:%d:%d:%d:%d:%d", GatewayMAC[0], GatewayMAC[1], GatewayMAC[2], GatewayMAC[3], GatewayMAC[4], GatewayMAC[5]);
+#endif
+	}
+
+	else
+	{
+#ifdef PLATFORM_WINDOWS
+		strncpy_s(DestinationMAC, 18, InputDestination, 18);
+#else
+		strncpy(DestinationMAC, InputDestination, strlen(InputDestination));
+#endif
+	}
 
 	free(InputSource);
 	free(InputDestination);
+
+	Result = CreateEthernetHeader(SourceMAC, DestinationMAC, 0x0800);  // ETHERTYPE_IP (IPv4)
+
+	free(SourceMAC);
+	free(DestinationMAC);
 
 	return Result;
 }

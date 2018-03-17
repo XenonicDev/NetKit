@@ -9,6 +9,11 @@ int PrintNetworkDevices()
 	return 0;
 }
 
+int GetMACAddress(unsigned long Address, unsigned char* Result)
+{
+	return 0;
+}
+
 char* GetDefaultGateway()
 {
 	char* Result = NULL;
