@@ -50,9 +50,22 @@ int PrintNetworkDevices()
 char* GetDefaultGateway()
 {
 	PIP_ADAPTER_INFO Adapter;
-	ULONG Size = sizeof(Adapter);
+	ULONG Size = sizeof(IP_ADAPTER_INFO);
 
 	Adapter = (PIP_ADAPTER_INFO)malloc(Size);
+
+	// Get Size Needed.
+	if (GetAdaptersInfo(Adapter, &Size) == ERROR_BUFFER_OVERFLOW)
+	{
+		free(Adapter);
+
+		Adapter = (PIP_ADAPTER_INFO)malloc(Size);
+	}
+
+	else
+	{
+		return NULL;
+	}
 
 	if (GetAdaptersInfo(Adapter, &Size) == NO_ERROR)
 	{
