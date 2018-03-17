@@ -74,7 +74,11 @@ void MenuCreateSocket()
 
 			printf("\nInvalid Input, Try Again.\n");
 
+#ifdef PLATFORM_WINDOWS
+			Sleep(2000);
+#else
 			sleep(2);
+#endif
 		}
 	}
 
