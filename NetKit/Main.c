@@ -302,7 +302,7 @@ unsigned long MenuGetDestinationAddress()
 	return Address.sin_addr.s_addr;
 }
 
-unsigned short MenuGetDestinationPort()
+int MenuGetDestinationPort()
 {
 	char* Input = NULL;
 
@@ -344,7 +344,7 @@ void MenuSendPacket()
 		ClearScreen();
 
 		unsigned long Address = MenuGetDestinationAddress();
-		unsigned short Port = MenuGetDestinationPort();
+		int Port = MenuGetDestinationPort();
 
 		if (SendPacket(Socket, ntohl(Address), Port, NULL, 0) != 0)
 		{
