@@ -33,7 +33,7 @@ void FatalError()
 
 void PrintHeader()
 {
-	printf("- NetKit v0.3 -\n");
+	printf("- NetKit v0.4 -\n");
 	printf("Copyright (c) 2018 Andrew Depke\n");
 }
 

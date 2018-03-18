@@ -57,7 +57,7 @@ int CreateSocketRaw(int Protocol, int CustomHeaders)
 		return -1;
 	}
 
-	if (CustomHeaders)
+	if (CustomHeaders == 1)
 	{
 		int Option = 1;
 
