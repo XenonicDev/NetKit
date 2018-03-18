@@ -177,9 +177,9 @@ void MenuBindSocket()
 		// Get the MAC Address of the Selected Device.
 		struct ifreq IFRequest;
 		memset(&IFRequest, 0, sizeof(IFRequest));
-		//strncpy(IFRequest.ifr_name, DeviceName, IFNAMSIZ);
+		strncpy(IFRequest.ifr_name, DeviceName, strlen(DeviceName) - 1);
 
-		strncpy(IFRequest.ifr_name, "ens33", IFNAMSIZ);
+		//strncpy(IFRequest.ifr_name, "ens33", IFNAMSIZ);
 
 		if (ioctl(Socket, SIOCGIFHWADDR, (void*)&IFRequest) != 0)
 		{
