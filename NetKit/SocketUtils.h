@@ -191,6 +191,7 @@ ConnectionData GetSocketConnectionInfo(int Socket)
 int SendPacket(int Socket, unsigned long DestinationAddress, int DestinationPort, unsigned char* Payload, size_t PayloadLength)
 {
 	struct sockaddr_in Destination;
+	Destination.sin_family = AF_INET;
 	Destination.sin_addr.s_addr = htonl(DestinationAddress);
 	Destination.sin_port = htons(DestinationPort);
 
