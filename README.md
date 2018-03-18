@@ -3,4 +3,4 @@
 
 ### This utility has been written solely for educational purposes. Use of this tool for malicious activities is strictly forbidden.
 
-This tool is built to operate on Linux. Packet socket descriptors for Windows have been removed, and thus support has been dropped.
+This tool is built to operate on Linux and Windows, but should work on any \*nix system that supports POSIX and raw Berkeley sockets. [WinPcap](https://www.winpcap.org/) is required for usage on Windows due to the removal of userspace raw sockets.
