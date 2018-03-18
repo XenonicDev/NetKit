@@ -36,7 +36,7 @@ Packet* CreateTCPPacket(ETHERNET_HEADER* EthernetHeader, IP_HEADER* IPHeader, TC
 	memcpy((PseudoPacket + sizeof(PSEUDO_HEADER)), TCPHeader, TCPHeader->doff * 4);  // Copy TCP Header.
 	memcpy((PseudoPacket + sizeof(PSEUDO_HEADER) + TCPHeader->doff * 4), Payload, PayloadLength);  // Copy Payload.
 
-	TCPHeader->check = CalculateChecksum(PseudoPacket, PseudoPacketLength);
+	TCPHeader->check = (unsigned short)CalculateChecksum(PseudoPacket, PseudoPacketLength);
 
 	free(PseudoHeader);
 

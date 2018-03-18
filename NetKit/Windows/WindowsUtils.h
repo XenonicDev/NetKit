@@ -12,7 +12,7 @@
 // Grab a Linked List of Interfaces.
 pcap_if_t** GetNetworkDevices()
 {
-	pcap_if_t** Result = (pcap_if_t*)malloc(sizeof(pcap_if_t));
+	pcap_if_t** Result = (pcap_if_t**)malloc(sizeof(pcap_if_t));
 
 	char ErrorBuffer[PCAP_ERRBUF_SIZE + 1];
 
