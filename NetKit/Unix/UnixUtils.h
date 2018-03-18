@@ -39,9 +39,10 @@ int PrintNetworkDevices()
 	return 0;
 }
 
+// Not Supported.
 int GetMACAddress(unsigned long Address, unsigned char* Result)
 {
-	return 0;
+	return 1;
 }
 
 char* GetDefaultGateway()
