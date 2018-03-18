@@ -116,8 +116,8 @@ int BindSocketRaw(int Socket, char* Device, int Protocol)
 	struct sockaddr_ll LinkLayerAddress;
 	struct ifreq IFRequest;
 
-	memset(&LinkLayerAddress, sizeof(LinkLayerAddress));
-	memset(&IFRequest, sizeof(IFRequest));
+	memset(&LinkLayerAddress, 0, sizeof(LinkLayerAddress));
+	memset(&IFRequest, 0, sizeof(IFRequest));
 
 	strncpy(IFRequest.ifr_name, Device, strlen(Device) - 1);  // Subtract 1 to Remove Newline Character.
 
