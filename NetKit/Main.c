@@ -179,6 +179,7 @@ void MenuBindSocket()
 		memset(&IFRequest, 0, sizeof(IFRequest));
 		strncpy(IFRequest.ifr_name, DeviceName, strlen(DeviceName) - 2);
 
+		printf("DeviceName Value: %s\n", DeviceName);
 		printf("DeviceName Size: %d\n", strlen(DeviceName));
 		printf("IFNAMSIZ: %d\n", IFNAMSIZ);
 
