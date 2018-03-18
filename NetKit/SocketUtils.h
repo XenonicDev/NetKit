@@ -25,7 +25,7 @@ typedef struct
 
 int CreateSocket(int Protocol)
 {
-	int Result = socket(AF_INET, (Protocol == IPPROTO_UDP ? SOCK_DGRAM : SOCK_STREAM), Protocol);
+	int Result = (int)socket(AF_INET, (Protocol == IPPROTO_UDP ? SOCK_DGRAM : SOCK_STREAM), Protocol);
 	if (Result == -1)
 	{
 		char* Error = ErrorString(errno);
@@ -215,7 +215,7 @@ int SendPacket(int Socket, unsigned long DestinationAddress, int DestinationPort
 int SendPacketRaw(int Socket, Packet* TargetPacket)
 #ifdef PLATFORM_WINDOWS
 {
-	if (pcap_sendpacket(Pcap, TargetPacket->Raw, TargetPacket->Length) != 0)
+	if (pcap_sendpacket(Pcap, TargetPacket->Raw, (int)TargetPacket->Length) != 0)
 	{
 		printf("SendPacketRaw Failed. Error: %s\n", pcap_geterr(Pcap));
 

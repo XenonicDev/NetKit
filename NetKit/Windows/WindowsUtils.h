@@ -72,7 +72,7 @@ int GetMACAddress(unsigned long Address, unsigned char* Result)
 	{
 		BYTE* MACByteIter = (BYTE*)MACAddress;
 
-		for (int Iter = 0; Iter < PhysicalAddressLength; ++Iter)
+		for (unsigned int Iter = 0; Iter < PhysicalAddressLength; ++Iter)
 		{
 			Result[Iter] = (unsigned char)MACByteIter[Iter];
 		}

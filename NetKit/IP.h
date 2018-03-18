@@ -17,10 +17,10 @@ IP_HEADER* CreateIPHeader(int Protocol, unsigned long SourceAddress, unsigned lo
 	Result->version = 4;
 	Result->ihl = (sizeof(IP_HEADER)) / 4;  // Divide into Words. No Options.
 	Result->tos = 0;
-	Result->tot_len = htons(sizeof(IP_HEADER) + sizeof(TCP_HEADER) + PayloadLength);
+	Result->tot_len = htons((unsigned short)(sizeof(IP_HEADER) + sizeof(TCP_HEADER) + (unsigned int)PayloadLength));
 	Result->id = 0;
 	Result->frag_off = 0;
-	Result->ttl = htons(128);
+	Result->ttl = (unsigned char)htons(128);
 	Result->protocol = Protocol;
 	Result->check = 0;  // Calculate this Later.
 	Result->saddr = htonl(SourceAddress);
