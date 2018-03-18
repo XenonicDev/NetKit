@@ -121,7 +121,7 @@ int BindSocketRaw(int Socket, char* Device, int Protocol)
 
 	strncpy(IFRequest.ifr_name, Device, IFNAMSIZ);
 
-	printf("\nDEVIcENAME INITI: %s\n", Device);
+	printf("\nDEVICENAME INITI: %s\n", Device);
 	printf("\nDEVICENAME FINAL: %s\n", IFRequest.ifr_name);
 
 	if (ioctl(Socket, SIOCGIFINDEX, (void*)&IFRequest) != 0)

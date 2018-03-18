@@ -134,7 +134,11 @@ void MenuBindSocket()
 
 	if (IsRawSocket == 1)
 	{
+#ifdef PLATFORM_WINDOWS
 		printf("Enter Network Interface Index: ");
+#else
+		printf("Enter Network Interface Name: ");
+#endif
 
 		Input = GetInput();
 
@@ -168,18 +172,7 @@ void MenuBindSocket()
 
 		free(Devices);
 #else
-		struct ifaddrs* Devices = GetNetworkDevices();
-
-		int Iter = 1;
-		for (struct ifaddrs* Device = Devices; Device; Device = Device->ifa_next)
-		{
-			if (atoi(Input) == Iter)
-			{
-				strncpy(DeviceName, Device->ifa_name, 128);
-
-				break;
-			}
-		}
+		strncpy(DeviceName, Input, 128);
 #endif
 
 		if (BindSocketRaw(Socket, DeviceName, Protocol) != 0)
