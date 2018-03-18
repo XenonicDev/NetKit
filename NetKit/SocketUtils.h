@@ -116,13 +116,10 @@ int BindSocketRaw(int Socket, char* Device, int Protocol)
 	struct sockaddr_ll LinkLayerAddress;
 	struct ifreq IFRequest;
 
-	bzero(&LinkLayerAddress, sizeof(LinkLayerAddress));
-	bzero(&IFRequest, sizeof(IFRequest));
+	memset(&LinkLayerAddress, sizeof(LinkLayerAddress));
+	memset(&IFRequest, sizeof(IFRequest));
 
-	strncpy(IFRequest.ifr_name, Device, IFNAMSIZ);
-
-	printf("\nDEVICENAME INITI: %s\n", Device);
-	printf("\nDEVICENAME FINAL: %s\n", IFRequest.ifr_name);
+	strncpy(IFRequest.ifr_name, Device, strlen(Device) - 1);  // Subtract 1 to Remove Newline Character.
 
 	if (ioctl(Socket, SIOCGIFINDEX, (void*)&IFRequest) != 0)
 	{
