@@ -145,10 +145,10 @@ void MenuBindSocket()
 		char* DeviceName = (char*)malloc(128 * sizeof(char));
 
 #ifdef PLATFORM_WINDOWS
-		pcap_if_t* Devices = GetNetworkDevices();
+		pcap_if_t** Devices = GetNetworkDevices();
 
 		int Iter = 1;
-		for (pcap_if_t* Device = Devices->next; Device; Device = Device->next)
+		for (pcap_if_t* Device = *Devices; Device; Device = Device->next)
 		{
 			if (atoi(Input) == Iter)
 			{

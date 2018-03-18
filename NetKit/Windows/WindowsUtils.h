@@ -10,9 +10,9 @@
 #include "pcap/pcap.h"
 
 // Grab a Linked List of Interfaces.
-pcap_if_t* GetNetworkDevices()
+pcap_if_t** GetNetworkDevices()
 {
-	pcap_if_t* Result = (pcap_if_t*)malloc(sizeof(pcap_if_t));
+	pcap_if_t** Result = (pcap_if_t*)malloc(sizeof(pcap_if_t));
 
 	char ErrorBuffer[PCAP_ERRBUF_SIZE + 1];
 
@@ -28,7 +28,7 @@ pcap_if_t* GetNetworkDevices()
 
 int PrintNetworkDevices()
 {
-	pcap_if_t* Devices = GetNetworkDevices();
+	pcap_if_t** Devices = GetNetworkDevices();
 
 	if (Devices == NULL)
 	{
@@ -40,7 +40,7 @@ int PrintNetworkDevices()
 	printf("Network Devices -\n");
 	
 	int Iter = 1;
-	for (Device = Devices->next; Device; Device = Device->next)
+	for (Device = *Devices; Device; Device = Device->next)
 	{
 		printf(" %d. %s | %.30s...\n", Iter, Device->name, Device->description);
 
