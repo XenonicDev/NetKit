@@ -207,22 +207,22 @@ void MenuBindSocket()
 
 		Input = GetInput();
 
-		unsigned long Address = 0;
+		unsigned long Address = INADDR_ANY;
 
-		if (Input[0] != '0')
+		if (atoi(Input) != '0')
 		{
-			struct sockaddr_in SockAddr;
+			inet_pton(AF_INET, Input, &Address);
 
-			inet_pton(AF_INET, Input, &SockAddr.sin_addr);
-
-			Address = ntohl(SockAddr.sin_addr.s_addr);
+			Address = ntohl(Address);
 		}
+
+		free(Input);
 
 		printf("Enter Local Port (0 for Automatic Assignment): ");
 
 		Input = GetInput();
 
-		int Port = 0;
+		int Port = atoi(Input);
 
 		if (BindSocket(Socket, Address, Port) != 0)
 		{
