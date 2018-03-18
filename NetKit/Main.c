@@ -403,13 +403,13 @@ unsigned long MenuGetDestinationAddress()
 
 	Input = GetInput();
 
-	struct sockaddr_in Address;
+	unsigned long Address = 0;
 
-	inet_ntop(AF_INET, (struct sockaddr*)&Address, Input, sizeof(Address));
+	inet_pton(AF_INET, Input, &Address);
 
 	free(Input);
 
-	return Address.sin_addr.s_addr;
+	return ntohl(Address);
 }
 
 int MenuGetDestinationPort()
@@ -461,7 +461,7 @@ void MenuSendPacket()
 		unsigned long Address = MenuGetDestinationAddress();
 		int Port = MenuGetDestinationPort();
 
-		if (SendPacket(Socket, ntohl(Address), Port, NULL, 0) != 0)
+		if (SendPacket(Socket, Address, Port, NULL, 0) != 0)
 		{
 			printf("Failed to Send Packet\n");
 		}
