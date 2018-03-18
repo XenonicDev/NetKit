@@ -191,6 +191,8 @@ void MenuBindSocket()
 
 		for (int Iter = 0; Iter < 6; ++Iter)
 		{
+			printf("iter %d\n", Iter);
+
 			InterfaceMAC[Iter] = DeviceMAC->ether_addr_octet[Iter];
 		}
 #endif
