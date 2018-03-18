@@ -179,6 +179,9 @@ void MenuBindSocket()
 		memset(&IFRequest, 0, sizeof(IFRequest));
 		strncpy(IFRequest.ifr_name, DeviceName, strlen(DeviceName) - 2);
 
+		printf("DeviceName Size: %d\n", strlen(DeviceName));
+		printf("IFNAMSIZ: %d\n", IFNAMSIZ);
+
 		//strncpy(IFRequest.ifr_name, "ens33", IFNAMSIZ);
 
 		if (ioctl(Socket, SIOCGIFHWADDR, (void*)&IFRequest) != 0)
