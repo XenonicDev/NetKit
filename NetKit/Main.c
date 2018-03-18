@@ -173,6 +173,25 @@ void MenuBindSocket()
 		free(Devices);
 #else
 		strncpy(DeviceName, Input, 128);
+
+		// Get the MAC Address of the Selected Device.
+		struct ifreq IFRequest;
+		memset(&IFRequest, 0, sizeof(IFRequest));
+		strncpy(IFRequest.ifr_name, DeviceName, IFNAMSIZ);
+
+		if (ioctl(Socket, SIOCGIFHWADDR, (void*)&IFRequest) != 0)
+		{
+			printf("Error Reading Device MAC Address. Error: %s\n", strerror(errno));
+
+			FatalError();
+		}
+
+		struct ether_addr* DeviceMAC = ether_aton(IFRequest.ifr_hwaddr.sa_data);
+
+		for (int Iter = 0; Iter < 6; ++Iter)
+		{
+			InterfaceMAC[Iter] = DeviceMAC->octet[Iter];
+		}
 #endif
 
 		if (BindSocketRaw(Socket, DeviceName, Protocol) != 0)
