@@ -187,27 +187,9 @@ void MenuBindSocket()
 			FatalError();
 		}
 
-		struct ether_addr* DeviceMAC = ether_aton(IFRequest.ifr_hwaddr.sa_data);
-
-		if (!DeviceMAC)
-		{
-			printf("DeviceMAC Invalid\n");
-
-			FatalError();
-		}
-
-		if (!DeviceMAC->ether_addr_octet)
-		{
-			printf("DeviceMAC Ether Addr Octet Invalid\n");
-
-			FatalError();
-		}
-
 		for (int Iter = 0; Iter < 6; ++Iter)
 		{
-			printf("iter %d\n", Iter);
-
-			InterfaceMAC[Iter] = DeviceMAC->ether_addr_octet[Iter];
+			InterfaceMAC[Iter] = IFRequest.ifr_hwaddr.sa_data[Iter];
 		}
 #endif
 
