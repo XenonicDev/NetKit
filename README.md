@@ -7,6 +7,6 @@ This tool is built to operate on Linux and Windows, but should work on any \*nix
 
 ## Building
 ### \*nix
-`gcc Main.c -o NetKit`
+> `gcc Main.c -o NetKit`
 ### Windows
-Build NetKit.sln from either the command line or Visual Studio.
+> Build NetKit.sln from either the command line or Visual Studio.
