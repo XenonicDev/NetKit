@@ -114,14 +114,14 @@ int BindSocketRaw(int Socket, char* Device, int Protocol)
 #else
 {
 	struct sockaddr_ll LinkLayerAddress;
-	struct ifreq ifr;
+	struct ifreq IFRequest;
 
 	bzero(&LinkLayerAddress, sizeof(LinkLayerAddress));
-	bzero(&ifr, sizeof(ifr));
+	bzero(&IFRequest, sizeof(IFRequest));
 
-	strncpy(ifr.ifr_name, Device, IFNAMSIZ - 1);
+	strncpy(IFRequest.ifr_name, Device, IFNAMSIZ);
 
-	if (ioctl(Socket, SIOCGIFINDEX, (void*)&ifr) != 0)
+	if (ioctl(Socket, SIOCGIFINDEX, (void*)&IFRequest) != 0)
 	{
 		printf("BindSocketRaw Failed at Network Interface Index Retrieval. Error: %s\n", strerror(errno));
 
@@ -129,7 +129,7 @@ int BindSocketRaw(int Socket, char* Device, int Protocol)
 	}
 
 	LinkLayerAddress.sll_family = AF_PACKET;
-	LinkLayerAddress.sll_ifindex = ifr.ifr_ifindex;
+	LinkLayerAddress.sll_ifindex = IFRequest.ifr_ifindex;
 	LinkLayerAddress.sll_protocol = htons(Protocol);
 
 	if (bind(Socket, (struct sockaddr*)&LinkLayerAddress, sizeof(LinkLayerAddress)) != 0)
